@@ -6,7 +6,7 @@ looker.plugins.visualizations.add({
 
 
     for(var i of data){
-      console.log(i.value)
+      console.log(i)
     }
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
@@ -25,6 +25,7 @@ looker.plugins.visualizations.add({
     // Create table rows
     var row = document.createElement('tr');
       data.forEach(function(row) {
+        console.log(row)
         for (var j of queryResponse.fields.dimensions){
           var td = document.createElement('td');
           console.log("actul value:",row[j])
