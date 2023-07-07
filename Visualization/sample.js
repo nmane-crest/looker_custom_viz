@@ -1,19 +1,21 @@
 looker.plugins.visualizations.add({
     create: function (element, config) {
       console.log(" create started......")
-        var chart = document.createElement('table');
-        chart.id = 'custom-table-chart';
+        // var chart = document.createElement('table');
+        // chart.id = 'custom-table-chart';
         // element.appendChild(chart);
         console.log("create End ...")
     },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
-      console.log("update started.....")
+    var chart = document.createElement('table');
+    chart.id = 'custom-table-chart';
+    console.log("update started.....")
     // Create table header
     var headerRow = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
-      console.log("Dimansion name:",i)
+      console.log("Dimansion name:",i.name)
       var th = document.createElement('th');
-      th.textContent = i;
+      th.textContent = i.name;
       headerRow.appendChild(th);
     }
     chart.appendChild(headerRow);
