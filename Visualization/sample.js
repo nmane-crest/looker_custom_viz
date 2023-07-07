@@ -8,19 +8,14 @@ looker.plugins.visualizations.add({
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
       console.log("update started.....")
 
-      console.log("data",data)
-      console.log("element",element)
-      console.log("config",config)
-      console.log("queryResponse",queryResponse)
-      console.log("details",details)
+      // console.log("data",data)
+      // console.log("element",element)
+      // console.log("config",config)
+      // console.log("queryResponse",queryResponse)
+      // console.log("details",details)
 
-    // for(var i of data){
-    //   console.log(i)
-    // }
-    // Create table header
 
     var chart = element.firstChild;
-    console.log("chart in update:",chart);
 
     var headerRow = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
@@ -28,9 +23,9 @@ looker.plugins.visualizations.add({
       var th = document.createElement('th');
       th.textContent = i.name;
       headerRow.appendChild(th);
+
     }
     chart.appendChild(headerRow);
-    console.log("headerRow completed...")
 
     // Create table rows
       data.forEach(function(row) {
@@ -38,16 +33,14 @@ looker.plugins.visualizations.add({
         var rows = document.createElement('tr');
         Object.keys(row).forEach(function(key){
           var td = document.createElement('td');
-          console.log("actul value:",row[key].value)
           td.textContent = row[key].value;
           rows.appendChild(td);
         });
+        chart.appendChild(rows);
       });
-    console.log("row added...")
-    chart.appendChild(rows);
-    console.log("successfully appended....")
+
+
     element.appendChild(chart);
-    console.log("chart added.....")
     doneRendering()
     }
 });
