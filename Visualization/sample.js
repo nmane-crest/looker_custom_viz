@@ -19,7 +19,7 @@ looker.plugins.visualizations.add({
     // }
     // Create table header
 
-    var chart = document.querySelector('custom-table-chart');
+    var chart = element.firstChild();
     console.log("chart in update:",chart);
 
     var headerRow = document.createElement('tr');
