@@ -16,6 +16,7 @@ looker.plugins.visualizations.add({
 
 
     var chart = element.firstChild;
+    chart.remove();
 
     var headerRow = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
