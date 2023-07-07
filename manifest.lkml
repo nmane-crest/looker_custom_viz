@@ -12,5 +12,5 @@
 visualization: {
   id: "custom_histogram"
   label: "custom_Histogram"
-  file: "/Visualization/custom_histogram.js"
+  file: "/Visualization/sample.js"
 }
