@@ -8,3 +8,9 @@
 #   label: "custom_label_one"
 #   file: "/Visualization/custom_labels_one.js"
 # }
+
+visualization: {
+  id: "custom_histogram"
+  label: "custom_Histogram"
+  file: "/Visualization/custom_histogram.js"
+}
