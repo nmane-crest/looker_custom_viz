@@ -21,13 +21,15 @@ looker.plugins.visualizations.add({
     //     // data.push(cell)
     // }
     // Create table header
+    var html=""
     var headerRow = document.createElement('tr');
     queryResponse.fields.dimensions.forEach(function(key) {
-      var th = document.createElement('th');
-      th.textContent = key;
-      headerRow.appendChild(th);
+      // var th = document.createElement('th');
+      // th.textContent = key;
+      // headerRow.appendChild(th);
+      html+=key
     });
-    chart.appendChild(headerRow);
+    // chart.appendChild(headerRow);
     // // Create table rows
     // data.forEach(function(item) {
     //   var row = document.createElement('tr');
@@ -40,7 +42,7 @@ looker.plugins.visualizations.add({
     });
 
     element.appendChild(chart);
-    // element.innerHTML = data.toString()
+    element.innerHTML = data.toString()
     doneRendering()
     }
 });
