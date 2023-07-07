@@ -20,7 +20,7 @@ looker.plugins.visualizations.add({
         }
         // data.push(cell)
     }
-    element.innerHTML = data
+    element.innerHTML = data.toString()
     doneRendering()
     }
 });
