@@ -8,7 +8,12 @@ looker.plugins.visualizations.add({
         //     var cell = var cell = row[queryResponse.fields.dimensions[0].name];
         //     html += LookerCharts.Utils.htmlForCell(cell);
         // }
-        element.innerHTML = queryResponse.fields.dimensions;
+
+        for (var i of queryResponse.fields.dimensions){
+          html +=i.name
+        }
+
+        element.innerHTML = html;
         doneRendering()
     }
 });
