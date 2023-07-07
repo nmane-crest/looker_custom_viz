@@ -6,7 +6,7 @@ looker.plugins.visualizations.add({
 
 
     for(var i of data){
-      console.log(i)
+      console.log(i.value)
     }
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
@@ -23,20 +23,16 @@ looker.plugins.visualizations.add({
     console.log("headerRow completed...")
 
     // Create table rows
-    // var row = document.createElement('tr');
-    // for (var i of queryResponse.fields.dimensions){
-    //   data.forEach(function(value) {
-    //   console.log("i:",value)
-    //   });
-    //   // data.forEach(function(value) {
-    //   var td = document.createElement('td');
-    //   console.log("actul value:",data[i.name])
-    //   td.textContent = data[i.name];
-    //   row.appendChild(td);
-    //   }
-    //   console.log("row added...")
-    //   chart.appendChild(row);
-    //   console.log("successfully appended....")
+    var row = document.createElement('tr');
+      data.forEach(function(row) {
+        var td = document.createElement('td');
+        console.log("actul value:",row)
+        td.textContent = row.value;
+        row.appendChild(td);
+      });
+    console.log("row added...")
+    chart.appendChild(row);
+    console.log("successfully appended....")
     element.appendChild(chart);
     console.log("chart added.....")
     doneRendering()
