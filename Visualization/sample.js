@@ -16,7 +16,7 @@ looker.plugins.visualizations.add({
 
 
     var chart = element.firstChild;
-    chart.remove();
+    chart.innerHTML = '';
     console.log(chart);
 
     var headerRow = document.createElement('tr');
