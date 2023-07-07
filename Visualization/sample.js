@@ -42,31 +42,31 @@ looker.plugins.visualizations.add({
     });
 
     element.appendChild(chart);
-    element.innerHTML = data.toString()
+    element.innerHTML = html
     doneRendering()
     }
 });
 
-function table_creation(){
-    // Create table header
-    var headerRow = document.createElement('tr');
-    Object.keys(data[0]).forEach(function(key) {
-      var th = document.createElement('th');
-      th.textContent = key;
-      headerRow.appendChild(th);
-    });
-    chart.appendChild(headerRow);
+// function table_creation(){
+//     // Create table header
+//     var headerRow = document.createElement('tr');
+//     Object.keys(data[0]).forEach(function(key) {
+//       var th = document.createElement('th');
+//       th.textContent = key;
+//       headerRow.appendChild(th);
+//     });
+//     chart.appendChild(headerRow);
 
-    // Create table rows
-    data.forEach(function(item) {
-      var row = document.createElement('tr');
-      Object.values(item).forEach(function(value) {
-        var td = document.createElement('td');
-        td.textContent = value;
-        row.appendChild(td);
-      });
-      chart.appendChild(row);
-    });
+//     // Create table rows
+//     data.forEach(function(item) {
+//       var row = document.createElement('tr');
+//       Object.values(item).forEach(function(value) {
+//         var td = document.createElement('td');
+//         td.textContent = value;
+//         row.appendChild(td);
+//       });
+//       chart.appendChild(row);
+//     });
 
-    element.appendChild(chart);
-}
+//     element.appendChild(chart);
+// }
