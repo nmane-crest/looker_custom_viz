@@ -1,4 +1,7 @@
 looker.plugins.visualizations.add({
+  create: function (element, config) {
+        // element.innerHTML = "<h1>Ready to render!</h1>";
+    },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
@@ -16,7 +19,9 @@ looker.plugins.visualizations.add({
     // Create table rows
     var row = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
-      console.log("i:",data[i.name])
+      data.forEach(function(value) {
+      console.log("i:",value)
+      });
       // data.forEach(function(value) {
       var td = document.createElement('td');
       console.log("actul value:",data[i.name])
