@@ -1,8 +1,8 @@
 looker.plugins.visualizations.add({
     create: function (element, config) {
-        // element.innerHTML = "<h1>Ready to render!</h1>";
-        var chart = document.createElement('table');
-        chart.id = 'custom-table-chart';
+        element.innerHTML = "<h1>Ready to render!</h1>";
+        // var chart = document.createElement('table');
+        // chart.id = 'custom-table-chart';
         // element.appendChild(chart);
         // const para = document.createElement("p");
         // para.innerText = "This is a paragraph";
@@ -22,7 +22,7 @@ looker.plugins.visualizations.add({
     // }
     // Create table header
     var html=""
-    var headerRow = document.createElement('tr');
+    // var headerRow = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
       // var th = document.createElement('th');
       // th.textContent = key;
