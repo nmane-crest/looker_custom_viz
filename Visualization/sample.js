@@ -31,7 +31,7 @@ looker.plugins.visualizations.add({
       console.log("row added...")
       chart.appendChild(row);
       console.log("successfully appended....")
-    }
+    });
     element.appendChild(chart);
     console.log("chart added.....")
     doneRendering()
