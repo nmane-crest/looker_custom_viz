@@ -25,10 +25,10 @@ looker.plugins.visualizations.add({
     // Create table rows
     var row = document.createElement('tr');
       data.forEach(function(row) {
-        for(var j of row){
+        for (var j of queryResponse.fields.dimensions){
           var td = document.createElement('td');
-          console.log("actul value:",j)
-          td.textContent = j.value;
+          console.log("actul value:",row[j])
+          td.textContent = row[j];
           row.appendChild(td);
         }
       });
