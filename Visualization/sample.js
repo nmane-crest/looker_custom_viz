@@ -17,6 +17,7 @@ looker.plugins.visualizations.add({
 
     var chart = element.firstChild;
     chart.remove();
+    console.log(chart);
 
     var headerRow = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
@@ -30,7 +31,7 @@ looker.plugins.visualizations.add({
 
     // Create table rows
       data.forEach(function(row) {
-        console.log(row)
+        // console.log(row)
         var rows = document.createElement('tr');
         Object.keys(row).forEach(function(key){
           var td = document.createElement('td');
