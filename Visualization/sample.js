@@ -6,7 +6,7 @@ looker.plugins.visualizations.add({
         element.appendChild(chart);
 
         var style = document.createElement('style');
-        style = `table, th, td {
+        style.innerHTML = `table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
         }`
