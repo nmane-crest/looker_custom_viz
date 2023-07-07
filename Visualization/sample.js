@@ -1,17 +1,27 @@
 looker.plugins.visualizations.add({
   create: function (element, config) {
         // element.innerHTML = "<h1>Ready to render!</h1>";
+        var chart = document.createElement('table');
+        chart.id = 'custom-table-chart';
+        element.appendChild(chart);
     },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
+      console.log("update started.....")
 
+      console.log("data",data)
+      console.log("element",element)
+      console.log("config",config)
+      console.log("queryResponse",queryResponse)
+      console.log("details",details)
 
     // for(var i of data){
     //   console.log(i)
     // }
-    var chart = document.createElement('table');
-    chart.id = 'custom-table-chart';
-    console.log("update started.....")
     // Create table header
+
+    var chart = document.querySelector('custom-table-chart');
+    console.log("chart in update:",chart);
+
     var headerRow = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
       // console.log("Dimansion name:",i.name)
@@ -23,9 +33,9 @@ looker.plugins.visualizations.add({
     console.log("headerRow completed...")
 
     // Create table rows
-    var rows = document.createElement('tr');
       data.forEach(function(row) {
         console.log(row)
+        var rows = document.createElement('tr');
         Object.keys(row).forEach(function(key){
           var td = document.createElement('td');
           console.log("actul value:",row[key].value)
