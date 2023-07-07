@@ -5,9 +5,9 @@ looker.plugins.visualizations.add({
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
 
 
-    for(var i of data){
-      console.log(i)
-    }
+    // for(var i of data){
+    //   console.log(i)
+    // }
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
     console.log("update started.....")
@@ -26,7 +26,7 @@ looker.plugins.visualizations.add({
     var row = document.createElement('tr');
       data.forEach(function(row) {
         console.log(row)
-        Object.keys(row).forEach((key)){
+        Object.keys(row).forEach((key))=>{
           var td = document.createElement('td');
           console.log("actul value:",row[key])
           td.textContent = row[key];
