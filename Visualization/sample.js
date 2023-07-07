@@ -22,7 +22,7 @@ looker.plugins.visualizations.add({
     // }
     // Create table header
     var headerRow = document.createElement('tr');
-    Object.keys(queryResponse.fields.dimensions).forEach(function(key) {
+    queryResponse.fields.dimensions.forEach(function(key) {
       var th = document.createElement('th');
       th.textContent = key;
       headerRow.appendChild(th);
