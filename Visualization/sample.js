@@ -23,18 +23,18 @@ looker.plugins.visualizations.add({
     console.log("headerRow completed...")
 
     // Create table rows
-    var row = document.createElement('tr');
+    var rows = document.createElement('tr');
       data.forEach(function(row) {
         console.log(row)
         Object.keys(row).forEach(function(key){
           var td = document.createElement('td');
-          console.log("actul value:",row[key])
-          td.textContent = row[key];
-          row.appendChild(td);
+          console.log("actul value:",row[key].value)
+          td.textContent = row[key].value;
+          rows.appendChild(td);
         });
       });
     console.log("row added...")
-    chart.appendChild(row);
+    chart.appendChild(rows);
     console.log("successfully appended....")
     element.appendChild(chart);
     console.log("chart added.....")
