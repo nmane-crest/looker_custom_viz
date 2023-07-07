@@ -3,6 +3,11 @@ looker.plugins.visualizations.add({
         // element.innerHTML = "<h1>Ready to render!</h1>";
     },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
+
+
+    for(var i of data){
+      console.log(i)
+    }
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
     console.log("update started.....")
@@ -17,10 +22,7 @@ looker.plugins.visualizations.add({
     chart.appendChild(headerRow);
     console.log("headerRow completed...")
 
-
-
-
-    // // Create table rows
+    // Create table rows
     // var row = document.createElement('tr');
     // for (var i of queryResponse.fields.dimensions){
     //   data.forEach(function(value) {
