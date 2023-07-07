@@ -17,7 +17,7 @@ looker.plugins.visualizations.add({
       // console.log("details",details)
 
 
-    var chart = element.firstChild;
+    var chart = element.table;
     chart.innerHTML = '';
     console.log(chart);
 
