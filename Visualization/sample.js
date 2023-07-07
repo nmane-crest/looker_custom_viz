@@ -23,12 +23,12 @@ looker.plugins.visualizations.add({
     // Create table header
     var html=""
     var headerRow = document.createElement('tr');
-    queryResponse.fields.dimensions.forEach(function(key) {
+    for (var i of queryResponse.fields.dimensions){
       // var th = document.createElement('th');
       // th.textContent = key;
       // headerRow.appendChild(th);
       html+=key
-    });
+    }
     // chart.appendChild(headerRow);
     // // Create table rows
     // data.forEach(function(item) {
@@ -39,7 +39,7 @@ looker.plugins.visualizations.add({
     //     row.appendChild(td);
     //   });
     //   chart.appendChild(row);
-    });
+    // });
 
     element.appendChild(chart);
     element.innerHTML = html
