@@ -12,8 +12,8 @@ looker.plugins.visualizations.add({
         var html = "";
         for (var row of data) {
           for (var i of queryResponse.fields.dimensions){
-            // var cell = row[i];
-             html += "<table><tr><td>row[i]</td></table>";
+            var cell = row[i];
+            // html += "<table><tr><td>row[i]</td></table>";
             html += LookerCharts.Utils.htmlForCell(cell);
         }
     }
