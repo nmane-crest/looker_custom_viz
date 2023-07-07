@@ -16,11 +16,11 @@ looker.plugins.visualizations.add({
     // Create table rows
     var row = document.createElement('tr');
     for (var i of queryResponse.fields.dimensions){
-      console.log("i:",i.name)
+      console.log("i:",data[i.name])
       // data.forEach(function(value) {
       var td = document.createElement('td');
-      console.log("actul value:",data[i.name].value)
-      td.textContent = data[i.name].value;
+      console.log("actul value:",data[i.name])
+      td.textContent = data[i.name];
       row.appendChild(td);
       }
       console.log("row added...")
