@@ -1,4 +1,18 @@
 looker.plugins.visualizations.add({
+  id: "label",
+  label: "Label",
+  options: {
+    font_size: {
+      type: "string",
+      label: "Font Size",
+      values: [
+        {"Large": "large"},
+        {"Small": "small"}
+      ],
+      display: "radio",
+      default: "large"
+    }
+  },
     create: function (element, config) {
         // Create a container element to hold the label visualization
         var container = element.appendChild(document.createElement("div"));
