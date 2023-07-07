@@ -5,6 +5,12 @@ looker.plugins.visualizations.add({
         chart.id = 'custom-table-chart';
         element.appendChild(chart);
 
+        var style = document.createElement('style');
+        style.innerHTML = `table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }`
+        element.appendChild(style);
 
     },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
@@ -46,12 +52,7 @@ looker.plugins.visualizations.add({
 
     element.appendChild(chart);
 
-    var style = document.createElement('style');
-    style.innerHTML = `table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }`
-    element.appendChild(style);
+
     doneRendering()
     }
 });
