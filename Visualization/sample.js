@@ -25,10 +25,12 @@ looker.plugins.visualizations.add({
     // Create table rows
     var row = document.createElement('tr');
       data.forEach(function(row) {
-        var td = document.createElement('td');
-        console.log("actul value:",row)
-        td.textContent = row.value;
-        row.appendChild(td);
+        for(var j of row){
+          var td = document.createElement('td');
+          console.log("actul value:",j)
+          td.textContent = j.value;
+          row.appendChild(td);
+        }
       });
     console.log("row added...")
     chart.appendChild(row);
