@@ -27,7 +27,8 @@ looker.plugins.visualizations.add({
       // var th = document.createElement('th');
       // th.textContent = key;
       // headerRow.appendChild(th);
-      html+=i
+      html+=LookerCharts.Utils.htmlForCell(i);
+i
     }
     // chart.appendChild(headerRow);
     // // Create table rows
