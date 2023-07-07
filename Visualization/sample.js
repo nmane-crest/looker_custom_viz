@@ -26,8 +26,8 @@ looker.plugins.visualizations.add({
       console.log("Value:",value)
       for (var i of queryResponse.fields.dimensions){
         var td = document.createElement('td');
-        console.log("actul value:",value[i.name])
-        td.textContent = value[i.name];
+        console.log("actul value:",value[i.name].value)
+        td.textContent = value[i.name].value;
         row.appendChild(td);
       }
       console.log("row added...")
