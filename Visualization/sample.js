@@ -11,13 +11,14 @@ looker.plugins.visualizations.add({
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
         var data = []
         for (var d of data) {
-          var row={}
+          // var row={}
           for (var i of queryResponse.fields.dimensions){
-            var cell = d[i.name];
-            row[i.name] = d[i.name]
+            // var cell = d[i.name];
+            // row[i.name] = d[i.name]
+            data.push(d[i.name])
             // html += LookerCharts.Utils.htmlForCell(cell);
         }
-        data.push(cell)
+        // data.push(cell)
     }
     element.innerHTML = data
     doneRendering()
