@@ -30,7 +30,7 @@ function renderHistogram(element) {
     // Example code:
     console.log("started rending Histogram")
     var data = [10, 20, 30, 40, 50];
-    var d3 = window.d3;
+    var d3 = window.parent.d3;
     console.log(d3)
     var svg = d3.select(this)
         .append('svg')
