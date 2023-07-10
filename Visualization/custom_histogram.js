@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 looker.plugins.visualizations.add({
     id: 'custom_histogram',
     label: 'Custom Histogram',
@@ -30,7 +29,7 @@ function renderHistogram(element) {
     // Example code:
     console.log("started rending Histogram")
     var data = [10, 20, 30, 40, 50];
-
+    const d3 = window.d3;
     var svg = d3.select(element)
         .append('svg')
         .attr('width', 400)
@@ -60,6 +59,7 @@ function updateHistogram(element, data) {
     // Code to update the histogram based on new data
     // Example code:
     console.log("update Histogram started..")
+    const d3 = window.d3;
     var svg = d3.select(element);
 
     var bars = svg.selectAll('rect')
