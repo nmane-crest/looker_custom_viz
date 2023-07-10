@@ -29,7 +29,7 @@ function renderHistogram(element) {
     // Example code:
     console.log("started rending Histogram")
     var data = [10, 20, 30, 40, 50];
-    const d3 = window.d3;
+    var d3 = window.d3;
     var svg = d3.select(element)
         .append('svg')
         .attr('width', 400)
