@@ -31,8 +31,8 @@ function renderHistogram(element) {
     console.log("started rending Histogram")
     var data = [10, 20, 30, 40, 50];
     // var d3 = window.parent.d3;
-    console.log(d3)
-    var svg = d3.select(this)
+    // console.log(d3)
+    var svg = d3.select(element)
         .append('svg')
         .attr('width', 400)
         .attr('height', 200);
