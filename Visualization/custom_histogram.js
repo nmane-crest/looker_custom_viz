@@ -58,8 +58,8 @@ function renderHistogram(element) {
 function updateHistogram(element, data) {
     // Code to update the histogram based on new data
     // Example code:
-    console.log("data",data)
     data = [10, 20, 30, 40, 50];
+    console.log("data",data)
     console.log("update Histogram started..")
     // const d3 = window.d3;
     var svg = d3.select(element);
