@@ -65,7 +65,7 @@ function updateHistogram(element, data) {
     var svg = d3.select(element);
     var bars = svg.selectAll('rect')
         .data(data)
-        .attr('width', function (d) {
+    bars.attr('width', function (d) {
         return xScale(d);
     });
     // var xScale = d3.scaleLinear()
