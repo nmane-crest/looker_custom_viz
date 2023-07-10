@@ -3,3 +3,13 @@ visualization: {
   label: "Sample"
   file: "/Visualization/sample.js"
 }
+visualization: {
+  id: "Custom label"
+  label: "Custom label"
+  file: "/Visualization/custom_labels.js"
+}
+visualization: {
+  id: "Histogram"
+  label: "Histogram"
+  file: "/Visualization/custom_histogram.js"
+}
