@@ -1,5 +1,6 @@
 looker.plugins.visualizations.add({
     create: function (element, config) {
+      console.log("Create function started..")
         var chart = document.createElement('table');
         chart.id = 'custom-table-chart';
         element.appendChild(chart);
@@ -7,12 +8,14 @@ looker.plugins.visualizations.add({
         style.innerHTML = `table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
-
         }`
         element.appendChild(style);
+        console.log("chart element added...")
     },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
+      console.log("update function started..")
         var chart = element.querySelector('#custom-table-chart');
+        console.log("chart Object:",chart)
         chart.innerHTML = '';
         var headerRow = document.createElement('tr');
         for (var i of queryResponse.fields.dimensions) {
