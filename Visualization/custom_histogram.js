@@ -64,9 +64,8 @@ function updateHistogram(element, data) {
     // const d3 = window.d3;
     var svg = d3.select(element);
     var bars = svg.selectAll('rect')
-        .data(data);
-    console.log("qdhggdq")
-    bars.attr('width', function (d) {
+        .data(data)
+        .attr('width', function (d) {
         return xScale(d);
     });
     console.log("strated to bars enters...")
