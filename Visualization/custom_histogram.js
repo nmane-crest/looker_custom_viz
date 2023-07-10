@@ -4,39 +4,37 @@ looker.plugins.visualizations.add({
     options: {},
     create: function (element, config) {
         // Create a new DOM element to render the histogram
-        console.log("create started.....")
+        // console.log("create started.....")
         var chart = document.createElement('div');
         chart.id = 'custom-histogram-chart';
         element.appendChild(chart);
-        console.log("chart addded ....")
+        // console.log("chart addded ....")
 
         // Render the histogram using a library like D3.js
         renderHistogram(chart);
     },
     updateAsync: function (data, element, config, queryResponse, details, done) {
         // Update the histogram based on the new data
-        console.log("updating graph started....")
+        // console.log("updating graph started....")
         updateHistogram(element.querySelector('#custom-histogram-chart'), data);
-        console.log("Updated End....")
+        // console.log("Updated End....")
         done();
     }
 });
 
 // Function to render the histogram
 function renderHistogram(element) {
-  console.log("Element:",element)
+  // console.log("Element:",element)
     // Code to render the histogram using D3.js or any other library
     // Customize the appearance, scales, axes, and data binding as needed
     // Example code:
-    console.log("started rending Histogram")
+    // console.log("started rending Histogram")
     var data = [10, 20, 30, 40, 50];
-    // var d3 = window.parent.d3;
-    // console.log(d3)
     var svg = d3.select(element)
         .append('svg')
         .attr('width', 400)
         .attr('height', 200);
-    console.log("SVG created...")
+    // console.log("SVG created...")
     var xScale = d3.scaleLinear()
         .domain([0, d3.max(data)])
         .range([0, 400]);
@@ -53,7 +51,7 @@ function renderHistogram(element) {
             return xScale(d);
         })
         .attr('height', 30);
-        console.log("rendering Completed...")
+        // console.log("rendering Completed...")
 }
 
 // Function to update the histogram with new data
@@ -63,12 +61,13 @@ function updateHistogram(element, data) {
     console.log("update Histogram started..")
     // const d3 = window.d3;
     var svg = d3.select(element);
-    var xScale = d3.scaleLinear()
-        .domain([0, d3.max(data)])
-        .range([0, 400]);
+    // var xScale = d3.scaleLinear()
+    //     .domain([0, d3.max(data)])
+    //     .range([0, 400]);
     var bars = svg.selectAll('rect')
-        .data(data)
-        .attr('width', function (d) {
+        .data(data);
+    console.log("Bars:",bars)
+    bars.attr('width', function (d) {
         return xScale(d);
     });
     console.log("strated to bars enters...")
@@ -82,6 +81,6 @@ function updateHistogram(element, data) {
             return xScale(d);
         })
         .attr('height', 30);
-  console.log("Bar exited ...")
+    console.log("Bar exited ...")
     bars.exit().remove();
 }
