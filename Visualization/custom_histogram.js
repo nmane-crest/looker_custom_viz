@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 looker.plugins.visualizations.add({
     id: 'custom_histogram',
     label: 'Custom Histogram',
