@@ -16,7 +16,7 @@ looker.plugins.visualizations.add({
     updateAsync: function (data, element, config, queryResponse, details, done) {
         // Update the histogram based on the new data
         // console.log("updating graph started....")
-        // updateHistogram(element.querySelector('#custom-histogram-chart'), data);
+        updateHistogram(element.querySelector('#custom-histogram-chart'), data);
         // console.log("Updated End....")
         done();
     }
