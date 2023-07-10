@@ -36,10 +36,10 @@ function renderHistogram(element,data=[]) {
         .data(data)
         .enter()
         .append('rect')
-        .attr('x', 0)
-        .attr('y', function (d, i) {
+        .attr('x', function (d, i) {
             return i * 40;
         })
+        .attr('y', 0)
         .attr('width', function (d) {
             return xScale(d);
         })
