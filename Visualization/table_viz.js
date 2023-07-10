@@ -11,6 +11,7 @@ looker.plugins.visualizations.add({
         }`
         element.appendChild(style);
         console.log("chart element added...")
+        console.log("adding")
     },
     updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
         console.log("update function started..")
