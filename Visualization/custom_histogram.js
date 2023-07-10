@@ -29,7 +29,7 @@ function renderHistogram(element,data=[]) {
     // Customize the appearance, scales, axes, and data binding as needed
     // Example code:
     // console.log("started rending Histogram")
-  element.querySelector('#custom-histogram-chart').innerHTML='';
+  element.innerHTML='';
 
     var data = [10, 20, 30, 40, 50];
     var svg = d3.select(element)
