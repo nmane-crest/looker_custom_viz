@@ -12,4 +12,5 @@ visualization: {
   id: "Histogram"
   label: "Histogram"
   file: "/Visualization/custom_histogram.js"
+  dependencies: ["https://unpkg.com/d3@4.13.0/build/d3.min.js","https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js","https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"]
 }
