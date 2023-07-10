@@ -61,7 +61,7 @@ function updateHistogram(element, data) {
     // Code to update the histogram based on new data
     // Example code:
     console.log("update Histogram started..")
-    const d3 = window.d3;
+    // const d3 = window.d3;
     var svg = d3.select(element);
 
     var bars = svg.selectAll('rect')
