@@ -57,8 +57,7 @@ function renderHistogram(element) {
 function updateHistogram(element, data) {
     // Code to update the histogram based on new data
     // Example code:
-    var chart = element.querySelector('#custom-histogram-chart');
-    chart.innerHTML = '';
+    console.log(element)
     data = [10, 20, 30, 40, 50];
     console.log("data",data)
     console.log("update Histogram started..")
