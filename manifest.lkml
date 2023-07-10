@@ -3,11 +3,7 @@ visualization: {
   label: "Sample"
   file: "/Visualization/sample.js"
 }
-visualization: {
-  id: "table"
-  label: "table viz"
-  file: "/Visualization/table_viz.js"
-}
+
 visualization: {
   id: "Custom label"
   label: "Custom label"
