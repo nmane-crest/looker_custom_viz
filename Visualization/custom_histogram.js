@@ -11,13 +11,14 @@ looker.plugins.visualizations.add({
         // console.log("chart addded ....")
 
         // Render the histogram using a library like D3.js
-        renderHistogram(chart);
+        // renderHistogram(chart);
     },
     updateAsync: function (data, element, config, queryResponse, details, done) {
         // Update the histogram based on the new data
         // console.log("updating graph started....")
         // element.querySelector('#custom-histogram-chart').innerHTML='';
         // updateHistogram(element.querySelector('#custom-histogram-chart'), data);
+        renderHistogram(element.querySelector('#custom-histogram-chart'), data)
         // console.log("Updated End....")
         done();
     }
