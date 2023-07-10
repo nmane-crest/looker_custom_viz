@@ -7,6 +7,7 @@ looker.plugins.visualizations.add({
         style.innerHTML = `table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
+
         }`
         element.appendChild(style);
     },

@@ -44,6 +44,9 @@ function renderHistogram(element,data=[]) {
             return xScale(d);
         })
         .attr('height', 30);
+
+
+
 }
 
 // // Function to update the histogram with new data
