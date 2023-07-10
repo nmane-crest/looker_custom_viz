@@ -24,13 +24,10 @@ looker.plugins.visualizations.add({
 
 // Function to render the histogram
 function renderHistogram(element) {
-  // console.log("Element:",element)
     // Code to render the histogram using D3.js or any other library
     // Customize the appearance, scales, axes, and data binding as needed
     // Example code:
     // console.log("started rending Histogram")
-    var chart = element.querySelector('#custom-histogram-chart');
-    chart.innerHTML = '';
     var data = [10, 20, 30, 40, 50];
     var svg = d3.select(element)
         .append('svg')
@@ -60,6 +57,8 @@ function renderHistogram(element) {
 function updateHistogram(element, data) {
     // Code to update the histogram based on new data
     // Example code:
+    var chart = element.querySelector('#custom-histogram-chart');
+    chart.innerHTML = '';
     data = [10, 20, 30, 40, 50];
     console.log("data",data)
     console.log("update Histogram started..")
