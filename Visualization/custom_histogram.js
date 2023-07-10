@@ -11,20 +11,20 @@ looker.plugins.visualizations.add({
         // console.log("chart addded ....")
 
         // Render the histogram using a library like D3.js
-        // renderHistogram(chart);
+        renderHistogram(chart);
     },
     updateAsync: function (data, element, config, queryResponse, details, done) {
         // Update the histogram based on the new data
         // console.log("updating graph started....")
         element.querySelector('#custom-histogram-chart').innerHTML='';
-        updateHistogram(element.querySelector('#custom-histogram-chart'), data);
+        // updateHistogram(element.querySelector('#custom-histogram-chart'), data);
         // console.log("Updated End....")
         done();
     }
 });
 
 // Function to render the histogram
-function renderHistogram(element) {
+function renderHistogram(element,data=None) {
     // Code to render the histogram using D3.js or any other library
     // Customize the appearance, scales, axes, and data binding as needed
     // Example code:
