@@ -61,7 +61,7 @@ function updateHistogram(element, data) {
     console.log("update Histogram started..")
     // const d3 = window.d3;
     var svg = d3.select(element);
-    // var xScale = d3.scaleLinear()
+    var xScale = d3.scaleLinear()
     //     .domain([0, d3.max(data)])
     //     .range([0, 400]);
     var bars = svg.selectAll('rect')
