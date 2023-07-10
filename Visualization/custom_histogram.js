@@ -11,7 +11,7 @@ looker.plugins.visualizations.add({
         // console.log("chart addded ....")
 
         // Render the histogram using a library like D3.js
-        renderHistogram(chart);
+        // renderHistogram(chart);
     },
     updateAsync: function (data, element, config, queryResponse, details, done) {
         // Update the histogram based on the new data
@@ -58,7 +58,8 @@ function renderHistogram(element) {
 function updateHistogram(element, data) {
     // Code to update the histogram based on new data
     // Example code:
-    var data = [10, 20, 30, 40, 50]
+    console.log("data",data)
+
     console.log("update Histogram started..")
     // const d3 = window.d3;
     var svg = d3.select(element);
@@ -67,9 +68,9 @@ function updateHistogram(element, data) {
         .attr('width', function (d) {
         return xScale(d);
     });
-    var xScale = d3.scaleLinear()
-        .domain([0, d3.max(data)])
-        .range([0, 400]);
+    // var xScale = d3.scaleLinear()
+    //     .domain([0, d3.max(data)])
+    //     .range([0, 400]);
     console.log("strated to bars enters...")
     bars.enter()
         .append('rect')
