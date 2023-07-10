@@ -67,9 +67,9 @@ function updateHistogram(element, data) {
         .attr('width', function (d) {
         return xScale(d);
     });
-    // var xScale = d3.scaleLinear()
-    //     .domain([0, d3.max(data)])
-    //     .range([0, 400]);
+    var xScale = d3.scaleLinear()
+        .domain([0, d3.max(data)])
+        .range([0, 400]);
     console.log("strated to bars enters...")
     bars.enter()
         .append('rect')
