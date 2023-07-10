@@ -62,11 +62,13 @@ function updateHistogram(element, data) {
     // const d3 = window.d3;
     var svg = d3.select(element);
     var bars = svg.selectAll('rect')
-        .data(data);
-    console.log("Bars:",bars)
-    bars.attr('width', function (d) {
+        .data(data)
+        .attr('width', function (d) {
         return xScale(d);
     });
+    var xScale = d3.scaleLinear()
+        .domain([0, d3.max(data)])
+        .range([0, 400]);
     console.log("strated to bars enters...")
     bars.enter()
         .append('rect')
