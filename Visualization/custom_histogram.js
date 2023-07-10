@@ -24,7 +24,7 @@ looker.plugins.visualizations.add({
 });
 
 // Function to render the histogram
-function renderHistogram(element,data=None) {
+function renderHistogram(element,data=[]) {
     // Code to render the histogram using D3.js or any other library
     // Customize the appearance, scales, axes, and data binding as needed
     // Example code:
