@@ -16,7 +16,6 @@ looker.plugins.visualizations.add({
     updateAsync: function (data, element, config, queryResponse, details, done) {
         // Update the histogram based on the new data
         // console.log("updating graph started....")
-        element.querySelector('#custom-histogram-chart').innerHTML='';
         // updateHistogram(element.querySelector('#custom-histogram-chart'), data);
         renderHistogram(element.querySelector('#custom-histogram-chart'), data)
         // console.log("Updated End....")
@@ -30,6 +29,8 @@ function renderHistogram(element,data=[]) {
     // Customize the appearance, scales, axes, and data binding as needed
     // Example code:
     // console.log("started rending Histogram")
+  element.querySelector('#custom-histogram-chart').innerHTML='';
+
     var data = [10, 20, 30, 40, 50];
     var svg = d3.select(element)
         .append('svg')
