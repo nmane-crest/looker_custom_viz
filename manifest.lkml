@@ -14,3 +14,8 @@ visualization: {
   file: "Visualization/custom_histogram.js"
   dependencies: ["https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"]
 }
+visualization: {
+  id: "square_circle"
+  label: "Square Circle"
+  file: "Visualization/square_circle_viz.js"
+}
