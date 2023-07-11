@@ -4,49 +4,88 @@ looker.plugins.visualizations.add({
             label: "Square Size",
             default: 200,
             type: "number"
+        },
+        borderWidth: {
+          label: "Border Width",
+          default: 5,
+          type: "number"
+        },
+        borderColor: {
+          label: "Border Color",
+          default: "black",
+          type: "string"
         }
     },
 
     create: function (element, config) {
         this.container = element.appendChild(document.createElement("div"));
         this.canvas = this.container.appendChild(document.createElement("canvas"));
+        this.canvas.style.display = "flex";
+        this.canvas.style.justifyContent = "center";
+        this.canvas.style.alignItems = "center";
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
         var context = this.canvas.getContext("2d");
         var size = config.squareSize;
-
         this.canvas.width = size;
         this.canvas.height = size;
 
         context.clearRect(0, 0, size, size);
 
         // Draw square
-        context.fillStyle = "red";
+        context.fillStyle = "grey";
         context.fillRect(0, 0, size, size);
+        context.lineWidth = config.borderWidth;
+        context.strokeStyle = config.borderColor;
+        context.strokeRect(0, 0, size, size);
 
         // Draw circle
-        var radius = size / 2;
+        var radius = size / 3;
         var circleX = size / 2;
         var circleY = size / 2;
 
-        context.beginPath();
-        context.arc(circleX, circleY, radius, 0, 2 * Math.PI);
-        context.fillStyle = "white";
-        context.fill();
+        // Function to draw the circle with a specified color
+        function drawCircle(color) {
+            context.beginPath();
+            context.arc(circleX, circleY, radius, 0, 2 * Math.PI);
+            context.fillStyle = color;
+            context.fill();
+            context.lineWidth = config.borderWidth;
+            context.strokeStyle = config.borderColor;
+            context.stroke();
+        }
+
+        // Draw initial circle
+        drawCircle("green");
 
         // Draw labels
-        var labels = ["Label 1", "Label 2", "Label 3"];
+        var labels = ["red", "yellow", "pink"];
         context.fillStyle = "black";
-        context.font = "12px Arial";
-
+        context.font = "16px Arial";
+        var lx=50;
         labels.forEach(function (label, index) {
-            var labelX = (size / 2) - (context.measureText(label).width / 2);
-            var labelY = (size / 2) + (index * 15);
-
+            var labelX = lx
+            var labelY = (size-20)
+            lx=lx+100;
             context.fillText(label, labelX, labelY);
-        });
+        }, this);
+        console.log("Drawing circle based on click")
+        // this.canvas.addEventListener('click', function (event) {
+        //     var rect = this.canvas.getBoundingClientRect();
+        //     var x = event.clientX - rect.left;
+        //     var y = event.clientY - rect.top;
 
+        //     labels.forEach(function (label, index) {
+        //         var labelX = 50 + (index * 100);
+        //         var labelY = size - 20;
+
+        //         if (x >= labelX && x <= labelX + context.measureText(label).width && y >= labelY - 20 && y <= labelY) {
+        //             // Fill circle with color based on the clicked label
+        //             drawCircle(label);
+        //         }
+        //     });
+        // });
         done();
     }
 });
