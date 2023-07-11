@@ -23,9 +23,30 @@ looker.plugins.visualizations.add({
         this.canvas.style.display = "flex";
         this.canvas.style.justifyContent = "center";
         this.canvas.style.alignItems = "center";
+
+        // Store a reference to the canvas element
+        var canvasElement = this.canvas;
+
+        this.canvas.addEventListener('click', function (event) {
+            console.log("canvas element:",canvasElement)
+            var rect = canvasElement.getBoundingClientRect();
+            var x = event.clientX - rect.left;
+            var y = event.clientY - rect.top;
+
+            labels.forEach(function (label, index) {
+                var labelX = 50 + (index * 100);
+                var labelY = size - 20;
+
+                if (x >= labelX && x <= labelX + context.measureText(label).width && y >= labelY - 20 && y <= labelY) {
+                    clickedLabel = label; // Store the clicked label
+                    drawCircle(label);
+                }
+            });
+        });
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
+        this.container=''
         var context = this.canvas.getContext("2d");
         var size = config.squareSize;
         this.canvas.width = size;
@@ -71,21 +92,6 @@ looker.plugins.visualizations.add({
             context.fillText(label, labelX, labelY);
         }, this);
         console.log("Drawing circle based on click")
-        // this.canvas.addEventListener('click', function (event) {
-        //     var rect = this.canvas.getBoundingClientRect();
-        //     var x = event.clientX - rect.left;
-        //     var y = event.clientY - rect.top;
-
-        //     labels.forEach(function (label, index) {
-        //         var labelX = 50 + (index * 100);
-        //         var labelY = size - 20;
-
-        //         if (x >= labelX && x <= labelX + context.measureText(label).width && y >= labelY - 20 && y <= labelY) {
-        //             // Fill circle with color based on the clicked label
-        //             drawCircle(label);
-        //         }
-        //     });
-        // });
         done();
     }
 });
