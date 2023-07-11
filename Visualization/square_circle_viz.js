@@ -27,6 +27,7 @@ looker.plugins.visualizations.add({
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
         this.container=''
+
         var context = this.canvas.getContext("2d");
         var size = config.squareSize;
         this.canvas.width = size;
