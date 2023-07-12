@@ -6,14 +6,14 @@ looker.plugins.visualizations.add({
             type: "number"
         },
         borderWidth: {
-          label: "Border Width",
-          default: 5,
-          type: "number"
+            label: "Border Width",
+            default: 5,
+            type: "number"
         },
         borderColor: {
-          label: "Border Color",
-          default: "black",
-          type: "string"
+            label: "Border Color",
+            default: "#FFFFFF",
+            type: "string"
         }
     },
 
@@ -26,8 +26,6 @@ looker.plugins.visualizations.add({
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
-        this.container=''
-
         var context = this.canvas.getContext("2d");
         var size = config.squareSize;
         this.canvas.width = size;
@@ -36,7 +34,7 @@ looker.plugins.visualizations.add({
         context.clearRect(0, 0, size, size);
 
         // Draw square
-        context.fillStyle = "#9FFCFD";
+        context.fillStyle = "#FFFFFF";
         context.fillRect(0, 0, size, size);
         context.lineWidth = config.borderWidth;
         context.strokeStyle = config.borderColor;
@@ -62,33 +60,49 @@ looker.plugins.visualizations.add({
         drawCircle("#77FF63");
 
         // Draw labels
-        var labels = ["red", "yellow", "pink"];
+        var dimentions = {}
+        var labels = []
+        var field_name = ""
+        for (var i of queryResponse.fields.dimensions) {
+            labels.push(i.name)
+            field_name = i.label
+        }
+        // for (var i of queryResponse.fields.measures) {
+        //     labels.push(i.name)
+        // }
+        for (var i of queryResponse.fields.dimensions) {
+            dimentions[i.label] = []
+            for (var j of queryResponse.data) {
+                labels.forEach(function (row) {
+                    dimentions[i.label].push(j[row].value)
+                })
+            }
+            labels.push(i.label)
+        }
         context.fillStyle = "black";
-        context.font = "16px Arial";
-        var lx=50;
-        labels.forEach(function (label, index) {
+        context.font = "14px Arial";
+        var lx = 50;
+        dimentions[field_name].forEach(function (label, index) {
             var labelX = lx
-            var labelY = (size-20)
-            lx=lx+100;
+            var labelY = (size - 20)
+            lx = lx + 100;
             context.fillText(label, labelX, labelY);
         }, this);
-        console.log("Drawing circle based on click")
         // Store a reference to the canvas element
         var canvasElement = this.canvas;
-        console.log(canvasElement)
         this.canvas.addEventListener('click', function (event) {
-            console.log("canvas element:",canvasElement)
             var rect = canvasElement.getBoundingClientRect();
             var x = event.clientX - rect.left;
             var y = event.clientY - rect.top;
 
-            labels.forEach(function (label, index) {
+            var color = ["#FFB3AB","#ACEBFF","#B0FFAE"]
+            dimentions[field_name].forEach(function (label, index) {
                 var labelX = 50 + (index * 100);
                 var labelY = size - 20;
 
                 if (x >= labelX && x <= labelX + context.measureText(label).width && y >= labelY - 20 && y <= labelY) {
                     clickedLabel = label; // Store the clicked label
-                    drawCircle(label);
+                    drawCircle(color[index]);
                 }
             });
         });
