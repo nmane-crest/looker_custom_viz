@@ -20,9 +20,9 @@ looker.plugins.visualizations.add({
     create: function (element, config) {
         this.container = element.appendChild(document.createElement("div"));
         this.canvas = this.container.appendChild(document.createElement("canvas"));
-        this.canvas.style.display = "flex";
-        this.canvas.style.justifyContent = "center";
-        this.canvas.style.alignItems = "center";
+        this.container.style.display = "flex";
+        this.container.style.justifyContent = "center";
+        this.container.style.alignItems = "center";
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
@@ -36,7 +36,7 @@ looker.plugins.visualizations.add({
         context.clearRect(0, 0, size, size);
 
         // Draw square
-        context.fillStyle = "grey";
+        context.fillStyle = "#9FFCFD";
         context.fillRect(0, 0, size, size);
         context.lineWidth = config.borderWidth;
         context.strokeStyle = config.borderColor;
@@ -59,7 +59,7 @@ looker.plugins.visualizations.add({
         }
 
         // Draw initial circle
-        drawCircle("green");
+        drawCircle("#77FF63");
 
         // Draw labels
         var labels = ["red", "yellow", "pink"];
