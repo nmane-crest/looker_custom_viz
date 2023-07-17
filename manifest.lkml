@@ -19,3 +19,8 @@ visualization: {
   label: "Square Circle"
   file: "Visualization/square_circle_viz.js"
 }
+visualization: {
+  id: "check"
+  label: "check"
+  file: "check.js"
+}
