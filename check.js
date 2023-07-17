@@ -92,7 +92,7 @@ looker.plugins.visualizations.add({
         //     });
         // });
         // Load the image
-        const imageUrl = 'https://illustoon.com/?dl=7504'; // Replace with the actual image URL or path
+        const imageUrl = 'https://illustoon.com/photo/dl/7502.png'; // Replace with the actual image URL or path
 
         // Create an img element
         const imgElement = document.createElement('img');
