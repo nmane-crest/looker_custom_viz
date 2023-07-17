@@ -1,32 +1,51 @@
 looker.plugins.visualizations.add({
-    options: {
-        squareSize: {
-            label: "Square Size",
-            default: 200,
-            type: "number"
-        },
-        borderWidth: {
-            label: "Border Width",
-            default: 5,
-            type: "number"
-        },
-        borderColor: {
-            label: "Border Color",
-            default: "black",
-            type: "string"
-        }
-    },
+    // options: {
+    //     squareSize: {
+    //         label: "Square Size",
+    //         default: 200,
+    //         type: "number"
+    //     },
+    //     borderWidth: {
+    //         label: "Border Width",
+    //         default: 5,
+    //         type: "number"
+    //     },
+    //     borderColor: {
+    //         label: "Border Color",
+    //         default: "black",
+    //         type: "string"
+    //     }
+    // },
 
     create: function (element, config) {
-        this.container = element.appendChild(document.createElement("div"));
-        this.canvas = this.container.appendChild(document.createElement("canvas"));
-        this.canvas.style.display = "flex";
-        this.canvas.style.justifyContent = "center";
-        this.canvas.style.alignItems = "center";
+        // this.container = element.appendChild(document.createElement("div"));
+        // this.canvas = this.container.appendChild(document.createElement("canvas"));
+        // this.canvas.style.display = "flex";
+        // this.canvas.style.justifyContent = "center";
+        // this.canvas.style.alignItems = "center";
+        // Load the image
+        element.container=''
+        const imageUrl = 'https://illustoon.com/photo/dl/7502.png'; // Replace with the actual image URL or path
+
+        // Create an img element
+        const imgElement = document.createElement('img');
+
+        // Set the image source
+        imgElement.src = imageUrl;
+
+        // Set any additional image attributes, if needed
+        // imgElement.alt = 'Alternative Text';
+
+        // Add the img element to the visualization container
+        this.container.appendChild(imgElement);
+
+        // Call the done() function to signal the end of the update
+        // done();
+        done();
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
-        // this.container = ''
+        this.container = ''
         // var context = this.canvas.getContext("2d");
         // var size = config.squareSize;
         // this.canvas.width = size;
@@ -91,23 +110,6 @@ looker.plugins.visualizations.add({
         //         }
         //     });
         // });
-        // Load the image
-        const imageUrl = 'https://illustoon.com/photo/dl/7502.png'; // Replace with the actual image URL or path
 
-        // Create an img element
-        const imgElement = document.createElement('img');
-
-        // Set the image source
-        imgElement.src = imageUrl;
-
-        // Set any additional image attributes, if needed
-        // imgElement.alt = 'Alternative Text';
-
-        // Add the img element to the visualization container
-        this.container.appendChild(imgElement);
-
-        // Call the done() function to signal the end of the update
-        // done();
-        done();
     }
 });
