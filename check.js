@@ -16,23 +16,30 @@ looker.plugins.visualizations.add({
     },
 
     updateAsync: function (data, element, config, queryResponse, details, done) {
-        const fieldData = queryResponse.fields.dimensions.map(dim => dim.label);
+        // console.log(queryResponse)
+        var fieldData = queryResponse.fields.dimensions.map(dim => dim.name);
+        var measuresData = queryResponse.fields.measures.map(mes => mes.name);
 
+        var fields = []
+        fields.push(fieldData[0])
+        fields.push(measuresData[0])
+        // console.log(fields)
         // Create a set to keep track of unique field values
-        const uniqueValuesSet = new Set();
+        const data_dim_mes=[]
 
         // Loop through each row of data and add field values to the set
+        console.log(data)
         data.forEach(row => {
-            fieldData.forEach(field => {
-                uniqueValuesSet.add(row[field].value);
+            fields.forEach(field =>{
+                data_dim_mes.push(row[field].value)
             });
         });
-
+        console.log(data_dim_mes)
         // Convert the set to an array and sort it (optional)
-        const uniqueValues = Array.from(uniqueValuesSet).sort();
+        // const uniqueValues = Array.from(uniqueValuesSet).sort();
 
         // Clear the existing content of the container
-        this.container.innerHTML = "";
+        // this.container.innerHTML = "";
 
         // Create a div element to hold the unique field data
         const fieldDataElement = document.createElement("div");
@@ -41,7 +48,7 @@ looker.plugins.visualizations.add({
         fieldDataElement.style.alignItems = "center"; // Center elements horizontally
 
         // Loop through each unique field value and create a div for each
-        uniqueValues.forEach(value => {
+        data_dim_mes.forEach(value => {
             const fieldElement = document.createElement("div");
             fieldElement.textContent = value;
             fieldDataElement.appendChild(fieldElement);
