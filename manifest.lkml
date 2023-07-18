@@ -22,5 +22,5 @@ visualization: {
 visualization: {
   id: "check"
   label: "check"
-  file: "check.js"
+  file: "Visualization/check.js"
 }
