@@ -31,9 +31,11 @@ looker.plugins.visualizations.add({
                 data_dim_mes.push(row[field].value)
             });
         });
+        document.querySelectorAll('#info').forEach((ele)=>{ele.remove();})
 
         // Create a div element to hold the unique field data
         const fieldDataElement = document.createElement("div");
+        fieldDataElement.setAttribute('id','info');
         fieldDataElement.style.display = "flex";
         fieldDataElement.style.flexDirection = "row"; // Display elements below each other
         fieldDataElement.style.alignItems = "center"; // Center elements horizontally
