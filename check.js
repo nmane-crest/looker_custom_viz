@@ -44,14 +44,14 @@ looker.plugins.visualizations.add({
         data_dim_mes.forEach((value,index) => {
             if((index+1) % 2 == 1){
                 const fieldElement = document.createElement("div");
-                fieldElement.style.padding= "12px"
+                fieldElement.style.padding= "6px"
                 var x= value + ":"
                 fieldElement.textContent = x ;
                 fieldDataElement.appendChild(fieldElement);
             }
             else{
                 const fieldElement = document.createElement("div");
-                fieldElement.style.padding= "12px"
+                fieldElement.style.padding= "6px"
                 fieldElement.style.color= "blue"
                 fieldElement.textContent = value;
                 fieldDataElement.appendChild(fieldElement);
