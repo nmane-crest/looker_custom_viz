@@ -208,7 +208,7 @@ looker.plugins.visualizations.add({
         .attr('transform', `translate(0, 0)`);
 
       lineLegend.append('line')
-        .attr('x1', 0)
+        .attr('x1', -15)
         .attr('y1', 0)
         .attr('x2', 20)
         .attr('y2', 0)
@@ -244,7 +244,7 @@ looker.plugins.visualizations.add({
         .style('fill-opacity', 0.7);
 
       legendItems.append('text')
-        .attr('x', 5)
+        .attr('x', 25)
         .attr('y', -5)
         .text(d => d.label)
         .attr('font-size', 12)
