@@ -246,27 +246,27 @@ looker.plugins.visualizations.add({
   },
 });
 
-// // Helper functions for tooltip content
-// function getDimensionLabel(row, dimensions) {
-//   return dimensions.map(dimension => row[dimension.name].value).join(' - ');
-// }
+// Helper functions for tooltip content
+function getDimensionLabel(row, dimensions) {
+  return dimensions.map(dimension => row[dimension.name].value).join(' - ');
+}
 
-// function getDimensionDetails(row, dimensions) {
-//   return dimensions.map(dimension => ({
-//     name: dimension.label_short,
-//     value: row[dimension.name].value,
-//   }));
-// }
+function getDimensionDetails(row, dimensions) {
+  return dimensions.map(dimension => ({
+    name: dimension.label_short,
+    value: row[dimension.name].value,
+  }));
+}
 
-// function getMeasureDetails(row, measures) {
-//   return measures.map(measure => ({
-//     name: measure.label_short,
-//     value: row[measure.name].value,
-//   }));
-// }
+function getMeasureDetails(row, measures) {
+  return measures.map(measure => ({
+    name: measure.label_short,
+    value: row[measure.name].value,
+  }));
+}
 
-// function getTooltipContent(d) {
-//   const dimensionDetails = d.dimensions.map(dimension => `${dimension.name}: ${dimension.value}`).join('<br>');
-//   const measureDetails = d.measures.map(measure => `${measure.name}: ${measure.value}`).join('<br>');
-//   return `<strong>${dimensionDetails}<br>${measureDetails}</strong>`;
-// }
+function getTooltipContent(d) {
+  const dimensionDetails = d.dimensions.map(dimension => `${dimension.name}: ${dimension.value}`).join('<br>');
+  const measureDetails = d.measures.map(measure => `${measure.name}: ${measure.value}`).join('<br>');
+  return `<strong>${dimensionDetails}<br>${measureDetails}</strong>`;
+}
