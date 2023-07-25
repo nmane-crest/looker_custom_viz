@@ -63,24 +63,12 @@ looker.plugins.visualizations.add({
     const lineData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
-      dimensions: dimensions.map(dimension => {
-        return {
-          label: dimension.label_short,
-          value: row[dimension.name].value
-        };
-      }),
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
-      dimensions: dimensions.map(dimension => {
-        return {
-          label: dimension.label_short,
-          value: row[dimension.name].value
-        };
-      }),
     }));
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
@@ -94,6 +82,21 @@ looker.plugins.visualizations.add({
       .append('svg')
       .attr('width', width)
       .attr('height', height);
+
+    // Add a background color to the SVG
+    svg.append('rect')
+      .attr('width', width)
+      .attr('height', height)
+      .attr('fill', '#f9f9f9'); // Light gray background color
+
+    // Add a title to the chart
+    svg.append('text')
+      .attr('class', 'chart-title')
+      .attr('x', width / 2)
+      .attr('y', margin.top / 2)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '20px')
+      .text('Custom Combined Chart');
 
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
@@ -134,9 +137,8 @@ looker.plugins.visualizations.add({
         .attr('height', d => chartHeight - yBarScale(d.y))
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
-          const dimensionsData = d.dimensions.map(dim => `<strong>${dim.label}: </strong>${dim.value}`).join('<br>');
           tooltip.style('visibility', 'visible')
-            .html(`${dimensionsData}<br><strong>${measures[0].name}: </strong>${d.y}`)
+            .html(`<strong>${config.xAxisLabel}: </strong>${d.x}<br><strong>${config.yAxisLabel}: </strong>${d.y}`)
             .style('left', (event.pageX) + 'px')
             .style('top', (event.pageY - 30) + 'px');
         })
@@ -202,13 +204,33 @@ looker.plugins.visualizations.add({
         .text(config.yAxisLabel);
     }
 
-    // Add legend with spacing between x-axis label and legend
-    const legendY = height - margin.bottom / 4;
+    // Add legend
     const legend = svg.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${width / 2},${legendY})`);
+      .attr('transform', `translate(${width / 2},${height - margin.bottom / 2 + 15})`);
 
     const legendSpacing = 30; // Adjust the spacing between legend items
+
+    // Add a background color to the legend
+    legend.append('rect')
+      .attr('x', -80)
+      .attr('y', -15)
+      .attr('width', 160)
+      .attr('height', (config.showBarChart && config.showLineChart) ? 60 : 30)
+      .attr('fill', '#f9f9f9') // Light gray background color
+      .attr('rx', 8) // Rounded corners
+      .attr('ry', 8);
+
+    // Add a border to the legend
+    legend.append('rect')
+      .attr('x', -80)
+      .attr('y', -15)
+      .attr('width', 160)
+      .attr('height', (config.showBarChart && config.showLineChart) ? 60 : 30)
+      .attr('fill', 'none')
+      .attr('stroke', '#ccc')
+      .attr('rx', 8) // Rounded corners
+      .attr('ry', 8);
 
     // Line chart legend item
     if (config.showLineChart) {
@@ -217,17 +239,19 @@ looker.plugins.visualizations.add({
         .attr('transform', `translate(0, 0)`);
 
       lineLegend.append('line')
-        .attr('x1', 0)
+        .attr('x1', -70)
         .attr('y1', 0)
-        .attr('x2', 20)
+        .attr('x2', -50)
         .attr('y2', 0)
         .attr('stroke', config.lineColor) // Use the selected line color from options
-        .attr('stroke-width', 2);
+        .attr('stroke-width', 3);
 
       lineLegend.append('text')
-        .attr('x', 25)
+        .attr('x', -45)
         .attr('y', 5)
-        .text('Line Chart');
+        .text('Line Chart')
+        .attr('font-size', 14)
+        .attr('font-weight', 'bold');
     }
 
     // Bar chart legend item
@@ -237,16 +261,18 @@ looker.plugins.visualizations.add({
         .attr('transform', `translate(0, ${legendSpacing})`);
 
       barLegend.append('rect')
-        .attr('x', 0)
+        .attr('x', -70)
         .attr('y', -10)
         .attr('width', 20)
         .attr('height', 20)
         .attr('fill', config.barColor) // Use the selected bar color from options
 
       barLegend.append('text')
-        .attr('x', 25)
+        .attr('x', -45)
         .attr('y', 5)
-        .text('Bar Chart');
+        .text('Bar Chart')
+        .attr('font-size', 14)
+        .attr('font-weight', 'bold');
     }
   },
 });
