@@ -25,6 +25,22 @@ looker.plugins.visualizations.add({
     const height = 400; // Adjust the desired height of the SVG
     const margin = { top: 40, right: 20, bottom: 40, left: 40 };
 
+    // Extract dimensions and measures from queryResponse
+    const dimensions = queryResponse.fields.dimension_like;
+    const measures = queryResponse.fields.measure_like;
+
+    // Extract data for the line chart
+    const lineData = data.map(row => ({
+      x: row[dimensions[0].name].value,
+      y: row[measures[0].name].value,
+    }));
+
+    // Extract data for the bar chart (for multiple measures, we'll use the first measure)
+    const barData = data.map(row => ({
+      x: row[dimensions[0].name].value,
+      y: row[measures[0].name].value,
+    }));
+
     // Calculate the chart's width and height based on whether the bar chart is displayed
     const chartWidth = config.showBarChart ? width - margin.left - margin.right : width;
     const chartHeight = height - margin.top - margin.bottom;
@@ -36,28 +52,6 @@ looker.plugins.visualizations.add({
       .append('svg')
       .attr('width', width)
       .attr('height', height);
-
-    // Sample data for line chart (replace with your actual data)
-    const lineData = [
-      { x: 0, y: 0 },
-      { x: 1, y: 25 },
-      { x: 2, y: 0 },
-      { x: 3, y: 50 },
-      { x: 4, y: 0 },
-      { x: 5, y: 0 },
-      { x: 6, y: 40 },
-    ];
-
-    // Sample data for bar chart (replace with your actual data)
-    const barData = [
-      { x: 0, y: 15 },
-      { x: 1, y: 25 },
-      { x: 2, y: 35 },
-      { x: 3, y: 20 },
-      { x: 4, y: 0 },
-      { x: 5, y: 10 },
-      { x: 6, y: 5 },
-    ];
 
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
@@ -73,6 +67,15 @@ looker.plugins.visualizations.add({
       .domain([0, d3.max(barData, d => d.y)])
       .range([chartHeight, 0]);
 
+    // Add tooltip div for displaying values on hover
+    const tooltip = d3.select('body')
+      .append('div')
+      .style('position', 'absolute')
+      .style('visibility', 'hidden')
+      .style('background-color', 'white')
+      .style('border', '1px solid #ccc')
+      .style('padding', '8px');
+
     // Conditionally render the bar chart based on the configuration option
     if (config.showBarChart) {
       const barChart = svg.append('g')
@@ -87,12 +90,24 @@ looker.plugins.visualizations.add({
         .attr('y', d => yBarScale(d.y))
         .attr('width', xScale.bandwidth())
         .attr('height', d => chartHeight - yBarScale(d.y))
-        .attr('fill', 'orange');
+        .attr('fill', 'orange')
+        .on('mouseover', function (event, d) {
+          tooltip.style('visibility', 'visible')
+            .html(`<strong>${dimensions[0].name}: </strong>${d.x}<br><strong>${measures[0].name}: </strong>${d.y}`)
+            .style('left', (event.pageX) + 'px')
+            .style('top', (event.pageY - 30) + 'px');
+        })
+        .on('mouseout', function () {
+          tooltip.style('visibility', 'hidden');
+        });
 
       // Add axes for the bar chart
       barChart.append('g')
         .attr('transform', `translate(0,${chartHeight})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale).tickSizeOuter(0))
+        .selectAll('text')
+        .style('text-anchor', 'end')
+        .attr('transform', 'rotate(-45) translate(-10, -10)');
 
       barChart.append('g')
         .call(d3.axisLeft(yBarScale));
@@ -118,7 +133,10 @@ looker.plugins.visualizations.add({
       // Add axes for the line chart
       lineChart.append('g')
         .attr('transform', `translate(0,${chartHeight})`)
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale).tickSizeOuter(0))
+        .selectAll('text')
+        .style('text-anchor', 'end')
+        .attr('transform', 'rotate(-45) translate(-10, -10)');
 
       lineChart.append('g')
         .call(d3.axisLeft(yLineScale));
