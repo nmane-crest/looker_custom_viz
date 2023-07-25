@@ -63,12 +63,24 @@ looker.plugins.visualizations.add({
     const lineData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
+      dimensions: dimensions.map(dimension => {
+        return {
+          label: dimension.label_short,
+          value: row[dimension.name].value
+        };
+      }),
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
+      dimensions: dimensions.map(dimension => {
+        return {
+          label: dimension.label_short,
+          value: row[dimension.name].value
+        };
+      }),
     }));
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
@@ -122,8 +134,9 @@ looker.plugins.visualizations.add({
         .attr('height', d => chartHeight - yBarScale(d.y))
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
+          const dimensionsData = d.dimensions.map(dim => `<strong>${dim.label}: </strong>${dim.value}`).join('<br>');
           tooltip.style('visibility', 'visible')
-            .html(`<strong>${dimensions.length >= 1 ? dimensions[0].label_short : 'X-Axis'}: </strong>${d.x}<br><strong>${measures[0].name}: </strong>${d.y}`)
+            .html(`${dimensionsData}<br><strong>${measures[0].name}: </strong>${d.y}`)
             .style('left', (event.pageX) + 'px')
             .style('top', (event.pageY - 30) + 'px');
         })
