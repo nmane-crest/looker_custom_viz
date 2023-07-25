@@ -12,6 +12,16 @@ looker.plugins.visualizations.add({
       label: 'Show Bar Chart',
       default: true,
     },
+    lineColor: {
+      type: 'string',
+      label: 'Line Color',
+      default: 'blue',
+    },
+    barColor: {
+      type: 'string',
+      label: 'Bar Color',
+      default: 'orange',
+    },
     xAxisLabel: {
       type: 'string',
       label: 'X-Axis Label',
@@ -33,7 +43,7 @@ looker.plugins.visualizations.add({
 
     const width = 600; // Adjust the desired width of the SVG
     const height = 400; // Adjust the desired height of the SVG
-    const margin = { top: 40, right: 20, bottom: 60, left: 60 }; // Increased bottom margin for x-axis label
+    const margin = { top: 40, right: 20, bottom: 80, left: 60 }; // Increased bottom margin for x-axis label and legend
 
     // Extract dimensions and measures from queryResponse
     const dimensions = queryResponse.fields.dimension_like;
@@ -100,7 +110,7 @@ looker.plugins.visualizations.add({
         .attr('y', d => yBarScale(d.y))
         .attr('width', xScale.bandwidth())
         .attr('height', d => chartHeight - yBarScale(d.y))
-        .attr('fill', 'orange')
+        .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
           tooltip.style('visibility', 'visible')
             .html(`<strong>${dimensions.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : dimensions.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${measures[0].name}: </strong>${d.y}`)
@@ -144,7 +154,7 @@ looker.plugins.visualizations.add({
       lineChart.append('path')
         .datum(lineData)
         .attr('fill', 'none')
-        .attr('stroke', 'blue')
+        .attr('stroke', config.lineColor) // Use the selected line color from options
         .attr('stroke-width', 2)
         .attr('d', line);
 
@@ -167,6 +177,52 @@ looker.plugins.visualizations.add({
         .attr('y', -margin.left + 10)
         .attr('text-anchor', 'middle')
         .text(config.yAxisLabel);
+    }
+
+    // Add legend
+    const legend = svg.append('g')
+      .attr('class', 'legend')
+      .attr('transform', `translate(${width / 2},${height - margin.bottom / 2})`);
+
+    const legendSpacing = 100; // Adjust the spacing between legend items
+
+    // Line chart legend item
+    if (config.showLineChart) {
+      const lineLegend = legend.append('g')
+        .attr('class', 'line-legend')
+        .attr('transform', `translate(${-legendSpacing}, 0)`);
+
+      lineLegend.append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', 20)
+        .attr('y2', 0)
+        .attr('stroke', config.lineColor) // Use the selected line color from options
+        .attr('stroke-width', 2);
+
+      lineLegend.append('text')
+        .attr('x', 25)
+        .attr('y', 5)
+        .text('Line Chart');
+    }
+
+    // Bar chart legend item
+    if (config.showBarChart) {
+      const barLegend = legend.append('g')
+        .attr('class', 'bar-legend')
+        .attr('transform', `translate(${legendSpacing}, 0)`);
+
+      barLegend.append('rect')
+        .attr('x', 0)
+        .attr('y', -10)
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('fill', config.barColor) // Use the selected bar color from options
+
+      barLegend.append('text')
+        .attr('x', 25)
+        .attr('y', 5)
+        .text('Bar Chart');
     }
   },
 });
