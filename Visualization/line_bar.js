@@ -60,17 +60,6 @@ looker.plugins.visualizations.add({
     config.yAxisLabel = config.yAxisLabel || defaultYAxisLabel;
 
     // Extract data for the line chart
-    // const lineData = data.map(row => ({
-    //   x: dimensions.length === 3 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value} - ${row[dimensions[2].name].value}` : dimensions.length === 2 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value}` : row[dimensions[0].name].value,
-    //   y: row[measures[0].name].value,
-    // }));
-
-    // // Extract data for the bar chart (for multiple measures, we'll use the first measure)
-    // const barData = data.map(row => ({
-    //   x: dimensions.length === 3 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value} - ${row[dimensions[2].name].value}` : dimensions.length === 2 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value}` : row[dimensions[0].name].value,
-    //   y: row[measures[0].name].value,
-    // }));
-    // Extract data for the line chart
     const lineData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
@@ -134,7 +123,7 @@ looker.plugins.visualizations.add({
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
           tooltip.style('visibility', 'visible')
-            .html(`<strong>${dimensions.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : dimensions.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${measures[0].name}: </strong>${d.y}`)
+            .html(`<strong>${dimensions.length >= 1 ? dimensions[0].label_short : 'X-Axis'}: </strong>${d.x}<br><strong>${measures[0].name}: </strong>${d.y}`)
             .style('left', (event.pageX) + 'px')
             .style('top', (event.pageY - 30) + 'px');
         })
@@ -200,10 +189,11 @@ looker.plugins.visualizations.add({
         .text(config.yAxisLabel);
     }
 
-    // Add legend
+    // Add legend with spacing between x-axis label and legend
+    const legendY = height - margin.bottom / 4;
     const legend = svg.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${width / 2},${height - margin.bottom / 2})`);
+      .attr('transform', `translate(${width / 2},${legendY})`);
 
     const legendSpacing = 30; // Adjust the spacing between legend items
 
