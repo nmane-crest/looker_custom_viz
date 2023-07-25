@@ -66,17 +66,17 @@ looker.plugins.visualizations.add({
     // Extract data for the line chart
     const lineData = data.map(row => ({
       x: xDimensionFields.length >= 1 ? getDimensionLabel(row, xDimensionFields) : 'N/A',
-      y: hasMeasureFields ? row[measures[0].name].value : row[xDimensionFields[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
+      y: xDimensionFields.length >= 1 ? row[measures[0].name].value : row[dimensions[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
       dimensions: getDimensionDetails(row, xDimensionFields),
-      measures: hasMeasureFields ? getMeasureDetails(row, measures) : [],
+      measures: xDimensionFields.length >= 1 ? getMeasureDetails(row, measures) : [],
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
       x: xDimensionFields.length >= 1 ? getDimensionLabel(row, xDimensionFields) : 'N/A',
-      y: hasMeasureFields ? row[measures[0].name].value : row[xDimensionFields[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
+      y: xDimensionFields.length >= 1 ? row[measures[0].name].value : row[dimensions[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
       dimensions: getDimensionDetails(row, xDimensionFields),
-      measures: hasMeasureFields ? getMeasureDetails(row, measures) : [],
+      measures: xDimensionFields.length >= 1 ? getMeasureDetails(row, measures) : [],
     }));
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
@@ -132,7 +132,7 @@ looker.plugins.visualizations.add({
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
           tooltip.style('visibility', 'visible')
-            .html(`<strong>${xDimensionFields.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : xDimensionFields.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${hasMeasureFields ? measures[0].name : 'Y-Axis'}: </strong>${d.y}`)
+            .html(`<strong>${xDimensionFields.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : xDimensionFields.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${xDimensionFields.length >= 1 ? measures[0].name : 'Y-Axis'}: </strong>${d.y}`)
             .style('left', (event.pageX + 10) + 'px') // Add a small offset to avoid hiding the tooltip
             .style('top', (event.pageY - 10) + 'px');
         })
