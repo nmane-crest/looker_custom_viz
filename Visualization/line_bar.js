@@ -46,9 +46,9 @@ looker.plugins.visualizations.add({
       { x: 1, y: 25 },
       { x: 2, y: 35 },
       { x: 3, y: 20 },
-        { x: 4, y: 0 },
-        { x: 5, y: 10 },
-        { x: 6, y: 5 },
+      { x: 4, y: 0 },
+      { x: 5, y: 10 },
+      { x: 6, y: 5 },
     ];
 
     // Create scales and axes for both charts
@@ -65,21 +65,6 @@ looker.plugins.visualizations.add({
       .domain([0, d3.max(barData, d => d.y)])
       .range([height, 0]);
 
-    const line = d3.line()
-      .x(d => xScale(d.x) + xScale.bandwidth() / 2)
-      .y(d => yLineScale(d.y));
-
-    // Conditionally render the line chart based on the configuration option
-    if (config.showLineChart) {
-      const lineChart = svg.append('g').attr('class', 'line-chart');
-      lineChart.append('path')
-        .datum(lineData)
-        .attr('fill', 'none')
-        .attr('stroke', 'blue')
-        .attr('stroke-width', 2)
-        .attr('d', line);
-    }
-
     // Conditionally render the bar chart based on the configuration option
     if (config.showBarChart) {
       const barChart = svg.append('g').attr('class', 'bar-chart');
@@ -92,6 +77,21 @@ looker.plugins.visualizations.add({
         .attr('width', xScale.bandwidth())
         .attr('height', d => height - yBarScale(d.y))
         .attr('fill', 'orange');
+    }
+
+    // Conditionally render the line chart based on the configuration option
+    if (config.showLineChart) {
+      const lineChart = svg.append('g').attr('class', 'line-chart');
+      const line = d3.line()
+        .x(d => xScale(d.x) + xScale.bandwidth() / 2)
+        .y(d => yLineScale(d.y));
+
+      lineChart.append('path')
+        .datum(lineData)
+        .attr('fill', 'none')
+        .attr('stroke', 'blue')
+        .attr('stroke-width', 2)
+        .attr('d', line);
     }
   },
 });
