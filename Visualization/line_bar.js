@@ -35,7 +35,7 @@ looker.plugins.visualizations.add({
   },
   create: function (element, config) {
     // Create a container for the chart with CSS style to center the content
-    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; justify-content: center; align-items: center;"></div>';
+    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;"></div>';
   },
   update: function (data, element, config, queryResponse) {
     // Remove any existing chart before creating a new one
@@ -87,8 +87,10 @@ looker.plugins.visualizations.add({
 
     const svg = d3.select('#custom-combined-chart')
       .append('svg')
-      .attr('width', width)
-      .attr('height', height);
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('viewBox', `0 0 ${width} ${height}`) // Added viewBox to make it responsive
+      .attr('preserveAspectRatio', 'xMidYMid meet'); // Added preserveAspectRatio to maintain aspect ratio
 
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
@@ -195,8 +197,6 @@ looker.plugins.visualizations.add({
       .attr('class', 'column-legend')
       .attr('transform', `translate(${width - margin.right - 10},${margin.top})`);
 
-    const legendSpacing = 20; // Adjust the spacing between legend items
-
     // Line chart legend item
     if (config.showLineChart) {
       const lineLegend = legend.append('g')
@@ -223,19 +223,26 @@ looker.plugins.visualizations.add({
     if (config.showBarChart) {
       const barLegend = legend.append('g')
         .attr('class', 'bar-legend')
-        .attr('transform', `translate(0, ${legendSpacing})`);
+        .attr('transform', `translate(0, ${20})`); // Set initial position for the legend items
 
-      barLegend.append('rect')
-        .attr('x', -70)
+      const legendItems = barLegend.selectAll('.legend-item')
+        .data(measures)
+        .enter().append('g')
+        .attr('class', 'legend-item')
+        .attr('transform', (d, i) => `translate(0, ${i * 20})`); // Position each legend item vertically
+
+      legendItems.append('rect')
+        .attr('x', -15)
         .attr('y', -10)
-        .attr('width', 20)
-        .attr('height', 20)
-        .attr('fill', config.barColor) // Use the selected bar color from options
+        .attr('width', 10)
+        .attr('height', 10)
+        .attr('fill', (d, i) => config.barColor) // Use the selected bar color from options
+        .style('fill-opacity', 0.7);
 
-      barLegend.append('text')
-        .attr('x', -45)
-        .attr('y', 5)
-        .text(measures.length > 0 ? measures[0].label : 'Measure')
+      legendItems.append('text')
+        .attr('x', 5)
+        .attr('y', -5)
+        .text(d => d.label)
         .attr('font-size', 12)
         .style('fill', 'black'); // Set legend text color to black
     }
