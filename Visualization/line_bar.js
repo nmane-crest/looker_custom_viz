@@ -15,22 +15,22 @@ looker.plugins.visualizations.add({
     lineColor: {
       type: 'string',
       label: 'Line Color',
-      default: 'green',
+      default: 'green', // Set line color to green by default
     },
     barColor: {
       type: 'string',
       label: 'Bar Color',
-      default: 'purple',
+      default: 'purple', // Set bar color to purple by default
     },
     xAxisLabel: {
       type: 'string',
       label: 'X-Axis Label',
-      default: 'X-Axis',
+      default: '',
     },
     yAxisLabel: {
       type: 'string',
       label: 'Y-Axis Label',
-      default: 'Y-Axis',
+      default: '',
     },
   },
   create: function (element, config) {
@@ -48,6 +48,16 @@ looker.plugins.visualizations.add({
     // Extract dimensions and measures from queryResponse
     const dimensions = queryResponse.fields.dimension_like;
     const measures = queryResponse.fields.measure_like;
+
+    // Set default x-axis label to the first dimension name
+    const defaultXAxisLabel = dimensions.length > 0 ? dimensions[0].label_short : 'X-Axis';
+
+    // Set default y-axis label to the measure name
+    const defaultYAxisLabel = measures.length > 0 ? measures[0].label_short : 'Y-Axis';
+
+    // Use default labels if not provided in options
+    config.xAxisLabel = config.xAxisLabel || defaultXAxisLabel;
+    config.yAxisLabel = config.yAxisLabel || defaultYAxisLabel;
 
     // Extract data for the line chart
     const lineData = data.map(row => ({
@@ -184,13 +194,13 @@ looker.plugins.visualizations.add({
       .attr('class', 'legend')
       .attr('transform', `translate(${width / 2},${height - margin.bottom / 2})`);
 
-    const legendSpacing = 100; // Adjust the spacing between legend items
+    const legendSpacing = 30; // Adjust the spacing between legend items
 
     // Line chart legend item
     if (config.showLineChart) {
       const lineLegend = legend.append('g')
-        .attr('class', 'column-legend')
-        .attr('transform', `translate(${-legendSpacing}, 0)`);
+        .attr('class', 'line-legend')
+        .attr('transform', `translate(0, 0)`);
 
       lineLegend.append('line')
         .attr('x1', 0)
@@ -210,7 +220,7 @@ looker.plugins.visualizations.add({
     if (config.showBarChart) {
       const barLegend = legend.append('g')
         .attr('class', 'bar-legend')
-        .attr('transform', `translate(${legendSpacing}, 0)`);
+        .attr('transform', `translate(0, ${legendSpacing})`);
 
       barLegend.append('rect')
         .attr('x', 0)
