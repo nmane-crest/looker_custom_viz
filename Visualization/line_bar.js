@@ -60,14 +60,25 @@ looker.plugins.visualizations.add({
     config.yAxisLabel = config.yAxisLabel || defaultYAxisLabel;
 
     // Extract data for the line chart
+    // const lineData = data.map(row => ({
+    //   x: dimensions.length === 3 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value} - ${row[dimensions[2].name].value}` : dimensions.length === 2 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value}` : row[dimensions[0].name].value,
+    //   y: row[measures[0].name].value,
+    // }));
+
+    // // Extract data for the bar chart (for multiple measures, we'll use the first measure)
+    // const barData = data.map(row => ({
+    //   x: dimensions.length === 3 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value} - ${row[dimensions[2].name].value}` : dimensions.length === 2 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value}` : row[dimensions[0].name].value,
+    //   y: row[measures[0].name].value,
+    // }));
+    // Extract data for the line chart
     const lineData = data.map(row => ({
-      x: dimensions.length === 3 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value} - ${row[dimensions[2].name].value}` : dimensions.length === 2 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value}` : row[dimensions[0].name].value,
+      x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
-      x: dimensions.length === 3 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value} - ${row[dimensions[2].name].value}` : dimensions.length === 2 ? `${row[dimensions[0].name].value} - ${row[dimensions[1].name].value}` : row[dimensions[0].name].value,
+      x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
     }));
 
