@@ -15,12 +15,12 @@ looker.plugins.visualizations.add({
     lineColor: {
       type: 'string',
       label: 'Line Color',
-      default: 'blue',
+      default: 'green',
     },
     barColor: {
       type: 'string',
       label: 'Bar Color',
-      default: 'orange',
+      default: 'purple',
     },
     xAxisLabel: {
       type: 'string',
@@ -189,7 +189,7 @@ looker.plugins.visualizations.add({
     // Line chart legend item
     if (config.showLineChart) {
       const lineLegend = legend.append('g')
-        .attr('class', 'line-legend')
+        .attr('class', 'column-legend')
         .attr('transform', `translate(${-legendSpacing}, 0)`);
 
       lineLegend.append('line')
