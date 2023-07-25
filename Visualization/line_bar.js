@@ -139,11 +139,11 @@ looker.plugins.visualizations.add({
         .selectAll('text')
         .style('text-anchor', 'end')
         .attr('transform', 'rotate(-45) translate(-10, -10)')
-        .style('fill', 'lightgrey'); // Set x-axis labels color to light grey
+        .style('fill', 'black'); // Set x-axis labels color to light grey
 
       barChart.append('g')
         .call(d3.axisLeft(yBarScale))
-        .style('fill', 'lightgrey'); // Set y-axis labels color to light grey
+        .style('fill', 'black'); // Set y-axis labels color to light grey
 
       // Add x-axis label
       barChart.append('text')
