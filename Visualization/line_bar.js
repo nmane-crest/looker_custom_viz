@@ -50,10 +50,10 @@ looker.plugins.visualizations.add({
     const measures = queryResponse.fields.measure_like;
 
     // Set default x-axis label to the first dimension name
-    const defaultXAxisLabel = dimensions.length > 0 ? dimensions[0].label_short : 'X-Axis';
+    const defaultXAxisLabel = dimensions.length > 0 ? dimensions[0].label : 'X-Axis';
 
     // Set default y-axis label to the measure name
-    const defaultYAxisLabel = measures.length > 0 ? measures[0].label_short : 'Y-Axis';
+    const defaultYAxisLabel = measures.length > 0 ? measures[0].label : 'Y-Axis';
 
     // Use default labels if not provided in options
     config.xAxisLabel = config.xAxisLabel || defaultXAxisLabel;
@@ -128,10 +128,12 @@ looker.plugins.visualizations.add({
         .call(d3.axisBottom(xScale).tickSizeOuter(0))
         .selectAll('text')
         .style('text-anchor', 'end')
-        .attr('transform', 'rotate(-45) translate(-10, -10)');
+        .attr('transform', 'rotate(-45) translate(-10, -10)')
+        .style('fill', 'lightgrey'); // Set x-axis labels color to light grey
 
       barChart.append('g')
-        .call(d3.axisLeft(yBarScale));
+        .call(d3.axisLeft(yBarScale))
+        .style('fill', 'lightgrey'); // Set y-axis labels color to light grey
 
       // Add x-axis label
       barChart.append('text')
@@ -139,6 +141,7 @@ looker.plugins.visualizations.add({
         .attr('x', chartWidth / 2)
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('text-anchor', 'middle')
+        .style('fill', 'lightgrey') // Set x-axis label color to light grey
         .text(config.xAxisLabel);
     }
 
@@ -165,10 +168,12 @@ looker.plugins.visualizations.add({
         .call(d3.axisBottom(xScale).tickSizeOuter(0))
         .selectAll('text')
         .style('text-anchor', 'end')
-        .attr('transform', 'rotate(-45) translate(-10, -10)');
+        .attr('transform', 'rotate(-45) translate(-10, -10)')
+        .style('fill', 'lightgrey'); // Set x-axis labels color to light grey
 
       lineChart.append('g')
-        .call(d3.axisLeft(yLineScale));
+        .call(d3.axisLeft(yLineScale))
+        .style('fill', 'lightgrey'); // Set y-axis labels color to light grey
 
       // Add y-axis label
       lineChart.append('text')
@@ -177,6 +182,7 @@ looker.plugins.visualizations.add({
         .attr('x', -chartHeight / 2)
         .attr('y', -margin.left + 10)
         .attr('text-anchor', 'middle')
+        .style('fill', 'lightgrey') // Set y-axis label color to light grey
         .text(config.yAxisLabel);
     }
 
@@ -185,7 +191,7 @@ looker.plugins.visualizations.add({
       .attr('class', 'legend')
       .attr('transform', `translate(${width - margin.right - 10},${margin.top})`);
 
-    const legendSpacing = 30; // Adjust the spacing between legend items
+    const legendSpacing = 20; // Adjust the spacing between legend items
 
     // Line chart legend item
     if (config.showLineChart) {
@@ -204,9 +210,9 @@ looker.plugins.visualizations.add({
       lineLegend.append('text')
         .attr('x', 25)
         .attr('y', 5)
-        .text('Line Chart')
-        .attr('font-size', 14)
-        .attr('font-weight', 'bold');
+        .text(dimensions.length > 0 ? dimensions[0].label : 'Dimension')
+        .attr('font-size', 12)
+        .style('fill', 'black'); // Set legend text color to black
     }
 
     // Bar chart legend item
@@ -225,14 +231,14 @@ looker.plugins.visualizations.add({
       barLegend.append('text')
         .attr('x', -45)
         .attr('y', 5)
-        .text('Bar Chart')
-        .attr('font-size', 14)
-        .attr('font-weight', 'bold');
-    }
-
-    // Helper function to get dimension label
-    function getDimensionLabel(row, dimensions) {
-      return dimensions.map(dimension => row[dimension.name].value).join(' - ');
+        .text(measures.length > 0 ? measures[0].label : 'Measure')
+        .attr('font-size', 12)
+        .style('fill', 'black'); // Set legend text color to black
     }
   },
 });
+
+// Helper function to get dimension label
+function getDimensionLabel(row, dimensions) {
+  return dimensions.map(dimension => row[dimension.name].value).join(' - ');
+}
