@@ -63,16 +63,12 @@ looker.plugins.visualizations.add({
     const lineData = data.map(row => ({
       x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
       y: row[measures[0].name].value,
-      dimensions: getDimensionDetails(row, dimensions),
-      measures: getMeasureDetails(row, measures),
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
       x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
       y: row[measures[0].name].value,
-      dimensions: getDimensionDetails(row, dimensions),
-      measures: getMeasureDetails(row, measures),
     }));
 
     // Check if any dimension is used as a measure, and if so, exclude it from the x-axis dimensions
@@ -104,16 +100,6 @@ looker.plugins.visualizations.add({
       .domain([0, d3.max(barData, d => d.y)])
       .range([chartHeight, 0]);
 
-    // Add tooltip div for displaying values on hover
-    const tooltip = d3.select('body')
-      .append('div')
-      .style('position', 'absolute')
-      .style('visibility', 'hidden')
-      .style('background-color', 'rgba(255, 255, 255, 0.9)')
-      .style('border', '1px solid #ccc')
-      .style('padding', '8px')
-      .style('font-size', '14px');
-
     // Conditionally render the bar chart based on the configuration option
     if (config.showBarChart) {
       const barChart = svg.append('g')
@@ -129,14 +115,11 @@ looker.plugins.visualizations.add({
         .attr('width', xScale.bandwidth())
         .attr('height', d => chartHeight - yBarScale(d.y))
         .attr('fill', config.barColor) // Use the selected bar color from options
-        .on('mouseover', function (event, d) {
-          tooltip.style('visibility', 'visible')
-            .html(getTooltipContent(d))
-            .style('left', (event.pageX + 10) + 'px') // Add a small offset to avoid hiding the tooltip
-            .style('top', (event.pageY - 10) + 'px');
+        .on('mouseover', function () {
+          // Add any desired interactivity for the bar chart here
         })
         .on('mouseout', function () {
-          tooltip.style('visibility', 'hidden');
+          // Add any desired interactivity for the bar chart here
         });
 
       // Add axes for the bar chart
@@ -247,40 +230,9 @@ looker.plugins.visualizations.add({
         .attr('font-weight', 'bold');
     }
 
-    // Helper functions for tooltip content
+    // Helper function to get dimension label
     function getDimensionLabel(row, dimensions) {
       return xDimensions.map(dimension => row[dimension.name].value).join(' - ');
-    }
-
-    function getDimensionDetails(row, dimensions) {
-      return dimensions.map(dimension => ({
-        name: dimension.label_short,
-        value: row[dimension.name].value,
-      }));
-    }
-
-    function getMeasureDetails(row, measures) {
-      return measures.map(measure => ({
-        name: measure.label_short,
-        value: row[measure.name].value,
-      }));
-    }
-
-    // Add tooltip content
-    function getTooltipContent(d) {
-      let tooltipContent = '';
-
-      // Display dimension names and values
-      d.dimensions.forEach(dimension => {
-        tooltipContent += `<strong>${dimension.name}: </strong>${dimension.value}<br>`;
-      });
-
-      // Display measure names and values
-      d.measures.forEach(measure => {
-        tooltipContent += `<strong>${measure.name}: </strong>${measure.value}<br>`;
-      });
-
-      return tooltipContent;
     }
   },
 });
