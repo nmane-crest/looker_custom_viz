@@ -188,7 +188,7 @@ looker.plugins.visualizations.add({
 
     // Add legend
     const legend = svg.append('g')
-      .attr('class', 'legend')
+      .attr('class', 'column-legend')
       .attr('transform', `translate(${width - margin.right - 10},${margin.top})`);
 
     const legendSpacing = 20; // Adjust the spacing between legend items
