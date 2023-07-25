@@ -41,6 +41,10 @@ looker.plugins.visualizations.add({
     // Remove any existing chart before creating a new one
     d3.select('#custom-combined-chart').selectAll('*').remove();
 
+    // Get the dimensions of the parent container
+    const parentWidth = element.clientWidth;
+    const parentHeight = element.clientHeight;
+
     // Calculate the number of data points in the X-axis
     const numDataPoints = data.length;
 
@@ -48,9 +52,9 @@ looker.plugins.visualizations.add({
     const measures = queryResponse.fields.measure_like;
     const numBars = measures.length > 0 ? data.length : 0;
 
-    // Calculate the desired width and height of the SVG based on the number of data points and bars
-    const width = Math.max(numDataPoints * 60, 600);
-    const height = Math.max(numBars * 60, 400);
+    // Calculate the desired width and height of the chart based on the number of data points and bars
+    const width = Math.max(numDataPoints * 60, parentWidth);
+    const height = Math.max(numBars * 60, parentHeight);
 
     const margin = { top: 40, right: 20, bottom: 80, left: 60 }; // Increased bottom margin for x-axis label and legend
 
