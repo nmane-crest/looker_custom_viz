@@ -41,19 +41,23 @@ looker.plugins.visualizations.add({
     // Remove any existing chart before creating a new one
     d3.select('#custom-combined-chart').selectAll('*').remove();
 
-    const width = 1000; // Adjust the desired width of the SVG
-    const height = 600; // Adjust the desired height of the SVG
+    // Calculate the number of data points in the X-axis
+    const numDataPoints = data.length;
+
+    // Calculate the number of bars in the bar chart (for multiple measures, we'll use the first measure)
+    const measures = queryResponse.fields.measure_like;
+    const numBars = measures.length > 0 ? data.length : 0;
+
+    // Calculate the desired width and height of the SVG based on the number of data points and bars
+    const width = Math.max(numDataPoints * 60, 600);
+    const height = Math.max(numBars * 60, 400);
+
     const margin = { top: 40, right: 20, bottom: 80, left: 60 }; // Increased bottom margin for x-axis label and legend
 
     // Extract dimensions and measures from queryResponse
     const dimensions = queryResponse.fields.dimension_like;
-    const measures = queryResponse.fields.measure_like;
-
-    // Set default x-axis label to the first dimension name
-    const defaultXAxisLabel = dimensions.length > 0 ? dimensions[0].label : 'X-Axis';
-
-    // Set default y-axis label to the measure name
-    const defaultYAxisLabel = measures.length > 0 ? measures[0].label : 'Y-Axis';
+    const defaultXAxisLabel = dimensions.length > 0 ? dimensions[0].label : 'X-Axis'; // Set default x-axis label to the first dimension name
+    const defaultYAxisLabel = measures.length > 0 ? measures[0].label : 'Y-Axis'; // Set default y-axis label to the measure name
 
     // Use default labels if not provided in options
     config.xAxisLabel = config.xAxisLabel || defaultXAxisLabel;
