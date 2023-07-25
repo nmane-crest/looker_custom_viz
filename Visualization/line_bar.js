@@ -198,9 +198,9 @@ looker.plugins.visualizations.add({
         .style('fill', 'black') // Set y-axis label color to black
         .text(config.yAxisLabel);
 
-      // Hide y-axis line and ticks
-      yAxis.select('.domain').remove();
-      yAxis.selectAll('.tick line').remove();
+      // Hide xAxis line and ticks
+      xAxis.select('.domain').remove();
+      xAxis.selectAll('.tick line').remove();
 
     }
 
