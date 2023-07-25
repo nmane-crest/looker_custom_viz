@@ -63,12 +63,28 @@ looker.plugins.visualizations.add({
     const lineData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
+      dimensions: dimensions.map(dim => ({
+        name: dim.label_short,
+        value: row[dim.name].value,
+      })),
+      measures: measures.map(msr => ({
+        name: msr.label_short,
+        value: row[msr.name].value,
+      })),
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
       x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
       y: row[measures[0].name].value,
+      dimensions: dimensions.map(dim => ({
+        name: dim.label_short,
+        value: row[dim.name].value,
+      })),
+      measures: measures.map(msr => ({
+        name: msr.label_short,
+        value: row[msr.name].value,
+      })),
     }));
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
@@ -103,9 +119,10 @@ looker.plugins.visualizations.add({
       .append('div')
       .style('position', 'absolute')
       .style('visibility', 'hidden')
-      .style('background-color', 'white')
+      .style('background-color', 'rgba(255, 255, 255, 0.9)')
       .style('border', '1px solid #ccc')
-      .style('padding', '8px');
+      .style('padding', '8px')
+      .style('font-size', '14px');
 
     // Conditionally render the bar chart based on the configuration option
     if (config.showBarChart) {
@@ -124,9 +141,9 @@ looker.plugins.visualizations.add({
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
           tooltip.style('visibility', 'visible')
-            .html(`<strong>${config.xAxisLabel}: </strong>${d.x}<br><strong>${config.yAxisLabel}: </strong>${d.y}`)
-            .style('left', (event.pageX) + 'px')
-            .style('top', (event.pageY - 30) + 'px');
+            .html(getTooltipContent(d)) // Call the function to generate tooltip content
+            .style('left', (event.pageX + 10) + 'px') // Add a small offset to avoid hiding the tooltip
+            .style('top', (event.pageY - 10) + 'px');
         })
         .on('mouseout', function () {
           tooltip.style('visibility', 'hidden');
@@ -188,6 +205,19 @@ looker.plugins.visualizations.add({
         .attr('y', -margin.left + 10)
         .attr('text-anchor', 'middle')
         .text(config.yAxisLabel);
+    }
+
+    // Function to generate tooltip content
+    function getTooltipContent(data) {
+      let tooltipContent = '';
+      tooltipContent += `<strong>${config.xAxisLabel}: </strong>${data.x}<br>`;
+      data.dimensions.forEach(dim => {
+        tooltipContent += `<strong>${dim.name}: </strong>${dim.value}<br>`;
+      });
+      data.measures.forEach(msr => {
+        tooltipContent += `<strong>${msr.name}: </strong>${msr.value}<br>`;
+      });
+      return tooltipContent;
     }
 
     // Add legend
