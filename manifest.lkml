@@ -24,3 +24,9 @@ visualization: {
   label: "check"
   file: "Visualization/check.js"
 }
+visualization: {
+  id: "line_bar"
+  label: "Line_Bar"
+  file: "Visualization/line_bar.js"
+  dependencies: ["https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"]
+}
