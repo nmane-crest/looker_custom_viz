@@ -139,11 +139,11 @@ looker.plugins.visualizations.add({
         .selectAll('text')
         .style('text-anchor', 'end')
         .attr('transform', 'rotate(-45) translate(-10, -10)')
-        .style('fill', 'black'); // Set x-axis labels color to light grey
+        .style('fill', 'black'); // Set x-axis labels color to black
 
       barChart.append('g')
         .call(d3.axisLeft(yBarScale))
-        .style('fill', 'black'); // Set y-axis labels color to light grey
+        .style('fill', 'black'); // Set y-axis labels color to black
 
       // Add x-axis label
       barChart.append('text')
@@ -151,7 +151,7 @@ looker.plugins.visualizations.add({
         .attr('x', chartWidth / 2)
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('text-anchor', 'middle')
-        .style('fill', 'black') // Set x-axis label color to light grey
+        .style('fill', 'black') // Set x-axis label color to black
         .text(config.xAxisLabel);
       // Hide x-axis line
       barChart.select('.domain').remove();
@@ -181,11 +181,11 @@ looker.plugins.visualizations.add({
         .selectAll('text')
         .style('text-anchor', 'end')
         .attr('transform', 'rotate(-45) translate(-10, -10)')
-        .style('fill', 'black'); // Set x-axis labels color to light grey
+        .style('fill', 'black'); // Set x-axis labels color to black
 
       lineChart.append('g')
         .call(d3.axisLeft(yLineScale))
-        .style('fill', 'black'); // Set y-axis labels color to light grey
+        .style('fill', 'black'); // Set y-axis labels color to black
 
       // Add y-axis label
       lineChart.append('text')
@@ -194,7 +194,7 @@ looker.plugins.visualizations.add({
         .attr('x', -chartHeight / 2)
         .attr('y', -margin.left + 10)
         .attr('text-anchor', 'middle')
-        .style('fill', 'black') // Set y-axis label color to light grey
+        .style('fill', 'black') // Set y-axis label color to black
         .text(config.yAxisLabel);
       // Hide y-axis line
       lineChart.select('.domain').remove();
