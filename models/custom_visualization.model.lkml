@@ -15295,3 +15295,4 @@ explore: events {
 }
 explore: Viewing {}
 explore: pci {}
+explore: pci_scorecard {}
