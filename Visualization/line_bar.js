@@ -59,25 +59,24 @@ looker.plugins.visualizations.add({
     config.xAxisLabel = config.xAxisLabel || defaultXAxisLabel;
     config.yAxisLabel = config.yAxisLabel || defaultYAxisLabel;
 
-    // Check if any dimension is selected as a measure, and remove it from the x-axis
-    const dimensionFieldsAsMeasure = measures.filter(measure => dimensions.some(dimension => measure.name === dimension.name));
-    const xDimensionFields = dimensions.filter(dimension => !dimensionFieldsAsMeasure.some(measure => measure.name === dimension.name));
-
     // Extract data for the line chart
     const lineData = data.map(row => ({
-      x: xDimensionFields.length >= 1 ? getDimensionLabel(row, xDimensionFields) : 'N/A',
-      y: xDimensionFields.length >= 1 ? row[measures[0]?.name]?.value || 0 : row[dimensions[0]?.name]?.value || 0, // Use the first measure if available, else use the first numeric dimension as Y-axis
-      dimensions: getDimensionDetails(row, xDimensionFields),
-      measures: xDimensionFields.length >= 1 ? getMeasureDetails(row, measures) : [],
+      x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
+      y: row[measures[0].name].value,
+      dimensions: getDimensionDetails(row, dimensions),
+      measures: getMeasureDetails(row, measures),
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
-      x: xDimensionFields.length >= 1 ? getDimensionLabel(row, xDimensionFields) : 'N/A',
-      y: xDimensionFields.length >= 1 ? row[measures[0]?.name]?.value || 0 : row[dimensions[0]?.name]?.value || 0, // Use the first measure if available, else use the first numeric dimension as Y-axis
-      dimensions: getDimensionDetails(row, xDimensionFields),
-      measures: xDimensionFields.length >= 1 ? getMeasureDetails(row, measures) : [],
+      x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
+      y: row[measures[0].name].value,
+      dimensions: getDimensionDetails(row, dimensions),
+      measures: getMeasureDetails(row, measures),
     }));
+
+    // Check if any dimension is used as a measure, and if so, exclude it from the x-axis dimensions
+    const xDimensions = dimensions.filter(dimension => dimension.name !== measures[0].name);
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
     const chartWidth = config.showBarChart ? width - margin.left - margin.right : width;
@@ -132,7 +131,7 @@ looker.plugins.visualizations.add({
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
           tooltip.style('visibility', 'visible')
-            .html(`<strong>${xDimensionFields.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : xDimensionFields.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${xDimensionFields.length >= 1 ? measures[0]?.name : 'Y-Axis'}: </strong>${d.y}`)
+            .html(getTooltipContent(d))
             .style('left', (event.pageX + 10) + 'px') // Add a small offset to avoid hiding the tooltip
             .style('top', (event.pageY - 10) + 'px');
         })
@@ -247,24 +246,41 @@ looker.plugins.visualizations.add({
         .attr('font-size', 14)
         .attr('font-weight', 'bold');
     }
+
+    // Helper functions for tooltip content
+    function getDimensionLabel(row, dimensions) {
+      return xDimensions.map(dimension => row[dimension.name].value).join(' - ');
+    }
+
+    function getDimensionDetails(row, dimensions) {
+      return dimensions.map(dimension => ({
+        name: dimension.label_short,
+        value: row[dimension.name].value,
+      }));
+    }
+
+    function getMeasureDetails(row, measures) {
+      return measures.map(measure => ({
+        name: measure.label_short,
+        value: row[measure.name].value,
+      }));
+    }
+
+    // Add tooltip content
+    function getTooltipContent(d) {
+      let tooltipContent = '';
+
+      // Display dimension names and values
+      d.dimensions.forEach(dimension => {
+        tooltipContent += `<strong>${dimension.name}: </strong>${dimension.value}<br>`;
+      });
+
+      // Display measure names and values
+      d.measures.forEach(measure => {
+        tooltipContent += `<strong>${measure.name}: </strong>${measure.value}<br>`;
+      });
+
+      return tooltipContent;
+    }
   },
 });
-
-// Helper functions for tooltip content
-function getDimensionLabel(row, dimensions) {
-  return dimensions.map(dimension => row[dimension.name].value).join(' - ');
-}
-
-function getDimensionDetails(row, dimensions) {
-  return dimensions.map(dimension => ({
-    name: dimension.label_short,
-    value: row[dimension.name].value,
-  }));
-}
-
-function getMeasureDetails(row, measures) {
-  return measures.map(measure => ({
-    name: measure.label_short,
-    value: row[measure.name].value,
-  }));
-}
