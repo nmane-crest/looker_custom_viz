@@ -154,8 +154,8 @@ looker.plugins.visualizations.add({
         .text(config.xAxisLabel);
 
       // Hide y-axis line and ticks
-      yAxis.select('.domain').remove();
-      yAxis.selectAll('.tick line').remove();
+      xAxis.select('.domain').remove();
+      xAxis.selectAll('.tick line').remove();
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -199,8 +199,8 @@ looker.plugins.visualizations.add({
         .text(config.yAxisLabel);
 
       // Hide xAxis line and ticks
-      xAxis.select('.domain').remove();
-      xAxis.selectAll('.tick line').remove();
+      yAxis.select('.domain').remove();
+      yAxis.selectAll('.tick line').remove();
 
     }
 
