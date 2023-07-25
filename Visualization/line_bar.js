@@ -61,30 +61,18 @@ looker.plugins.visualizations.add({
 
     // Extract data for the line chart
     const lineData = data.map(row => ({
-      x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
+      x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
       y: row[measures[0].name].value,
-      dimensions: dimensions.map(dim => ({
-        name: dim.label_short,
-        value: row[dim.name].value,
-      })),
-      measures: measures.map(msr => ({
-        name: msr.label_short,
-        value: row[msr.name].value,
-      })),
+      dimensions: getDimensionDetails(row, dimensions),
+      measures: getMeasureDetails(row, measures),
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
-      x: dimensions.length >= 1 ? row[dimensions[0].name].value : 'N/A',
+      x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
       y: row[measures[0].name].value,
-      dimensions: dimensions.map(dim => ({
-        name: dim.label_short,
-        value: row[dim.name].value,
-      })),
-      measures: measures.map(msr => ({
-        name: msr.label_short,
-        value: row[msr.name].value,
-      })),
+      dimensions: getDimensionDetails(row, dimensions),
+      measures: getMeasureDetails(row, measures),
     }));
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
@@ -97,8 +85,7 @@ looker.plugins.visualizations.add({
     const svg = d3.select('#custom-combined-chart')
       .append('svg')
       .attr('width', width)
-      .attr('height', height)
-      .attr('style', 'background-color: #f9f9f9;'); // Set light gray background for the SVG
+      .attr('height', height);
 
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
@@ -207,23 +194,10 @@ looker.plugins.visualizations.add({
         .text(config.yAxisLabel);
     }
 
-    // Function to generate tooltip content
-    function getTooltipContent(data) {
-      let tooltipContent = '';
-      tooltipContent += `<strong>${config.xAxisLabel}: </strong>${data.x}<br>`;
-      data.dimensions.forEach(dim => {
-        tooltipContent += `<strong>${dim.name}: </strong>${dim.value}<br>`;
-      });
-      data.measures.forEach(msr => {
-        tooltipContent += `<strong>${msr.name}: </strong>${msr.value}<br>`;
-      });
-      return tooltipContent;
-    }
-
     // Add legend
     const legend = svg.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${width - margin.right - 20},${margin.top + 20})`); // Adjust the position of the legend
+      .attr('transform', `translate(${width - margin.right - 10},${margin.top})`);
 
     const legendSpacing = 30; // Adjust the spacing between legend items
 
@@ -234,15 +208,15 @@ looker.plugins.visualizations.add({
         .attr('transform', `translate(0, 0)`);
 
       lineLegend.append('line')
-        .attr('x1', -70)
+        .attr('x1', 0)
         .attr('y1', 0)
-        .attr('x2', -50)
+        .attr('x2', 20)
         .attr('y2', 0)
         .attr('stroke', config.lineColor) // Use the selected line color from options
-        .attr('stroke-width', 3);
+        .attr('stroke-width', 2);
 
       lineLegend.append('text')
-        .attr('x', -45)
+        .attr('x', 25)
         .attr('y', 5)
         .text('Line Chart')
         .attr('font-size', 14)
@@ -271,3 +245,28 @@ looker.plugins.visualizations.add({
     }
   },
 });
+
+// Helper functions for tooltip content
+function getDimensionLabel(row, dimensions) {
+  return dimensions.map(dimension => row[dimension.name].value).join(' - ');
+}
+
+function getDimensionDetails(row, dimensions) {
+  return dimensions.map(dimension => ({
+    name: dimension.label_short,
+    value: row[dimension.name].value,
+  }));
+}
+
+function getMeasureDetails(row, measures) {
+  return measures.map(measure => ({
+    name: measure.label_short,
+    value: row[measure.name].value,
+  }));
+}
+
+function getTooltipContent(d) {
+  const dimensionDetails = d.dimensions.map(dimension => `${dimension.name}: ${dimension.value}`).join('<br>');
+  const measureDetails = d.measures.map(measure => `${measure.name}: ${measure.value}`).join('<br>');
+  return `<strong>${dimensionDetails}<br>${measureDetails}</strong>`;
+}
