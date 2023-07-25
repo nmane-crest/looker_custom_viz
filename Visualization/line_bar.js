@@ -153,6 +153,8 @@ looker.plugins.visualizations.add({
         .attr('text-anchor', 'middle')
         .style('fill', 'lightgrey') // Set x-axis label color to light grey
         .text(config.xAxisLabel);
+      // Hide x-axis line
+      barChart.select('.domain').remove();
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -194,6 +196,8 @@ looker.plugins.visualizations.add({
         .attr('text-anchor', 'middle')
         .style('fill', 'lightgrey') // Set y-axis label color to light grey
         .text(config.yAxisLabel);
+      // Hide y-axis line
+      lineChart.select('.domain').remove();
     }
 
     // Add legend
