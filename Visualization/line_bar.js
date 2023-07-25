@@ -232,7 +232,7 @@ looker.plugins.visualizations.add({
 
     // Helper function to get dimension label
     function getDimensionLabel(row, dimensions) {
-      return xDimensions.map(dimension => row[dimension.name].value).join(' - ');
+      return dimensions.map(dimension => row[dimension.name].value).join(' - ');
     }
   },
 });
