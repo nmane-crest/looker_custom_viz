@@ -81,22 +81,8 @@ looker.plugins.visualizations.add({
     const svg = d3.select('#custom-combined-chart')
       .append('svg')
       .attr('width', width)
-      .attr('height', height);
-
-    // Add a background color to the SVG
-    svg.append('rect')
-      .attr('width', width)
       .attr('height', height)
-      .attr('fill', '#f9f9f9'); // Light gray background color
-
-    // Add a title to the chart
-    svg.append('text')
-      .attr('class', 'chart-title')
-      .attr('x', width / 2)
-      .attr('y', margin.top / 2)
-      .attr('text-anchor', 'middle')
-      .attr('font-size', '20px')
-      .text('Custom Combined Chart');
+      .attr('style', 'background-color: #f9f9f9;'); // Set light gray background for the SVG
 
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
@@ -207,30 +193,9 @@ looker.plugins.visualizations.add({
     // Add legend
     const legend = svg.append('g')
       .attr('class', 'legend')
-      .attr('transform', `translate(${width / 2},${height - margin.bottom / 2 + 15})`);
+      .attr('transform', `translate(${width - margin.right - 20},${margin.top + 20})`); // Adjust the position of the legend
 
     const legendSpacing = 30; // Adjust the spacing between legend items
-
-    // Add a background color to the legend
-    legend.append('rect')
-      .attr('x', -80)
-      .attr('y', -15)
-      .attr('width', 160)
-      .attr('height', (config.showBarChart && config.showLineChart) ? 60 : 30)
-      .attr('fill', '#f9f9f9') // Light gray background color
-      .attr('rx', 8) // Rounded corners
-      .attr('ry', 8);
-
-    // Add a border to the legend
-    legend.append('rect')
-      .attr('x', -80)
-      .attr('y', -15)
-      .attr('width', 160)
-      .attr('height', (config.showBarChart && config.showLineChart) ? 60 : 30)
-      .attr('fill', 'none')
-      .attr('stroke', '#ccc')
-      .attr('rx', 8) // Rounded corners
-      .attr('ry', 8);
 
     // Line chart legend item
     if (config.showLineChart) {
