@@ -59,35 +59,23 @@ looker.plugins.visualizations.add({
     config.xAxisLabel = config.xAxisLabel || defaultXAxisLabel;
     config.yAxisLabel = config.yAxisLabel || defaultYAxisLabel;
 
-    // Check if there are any measure fields selected
-    const hasMeasureFields = measures.length > 0;
-
-    // If there are no measure fields, find the first dimension that contains integer data and use it as Y-axis
-    if (!hasMeasureFields) {
-      for (const dimension of dimensions) {
-        const values = data.map(row => row[dimension.name].value);
-        const allIntegers = values.every(value => Number.isInteger(value));
-        if (allIntegers) {
-          // Use this dimension as Y-axis
-          measures.push(dimension);
-          break;
-        }
-      }
-    }
+    // Check if any dimension is selected as a measure, and remove it from the x-axis
+    const dimensionFieldsAsMeasure = measures.filter(measure => dimensions.some(dimension => measure.name === dimension.name));
+    const xDimensionFields = dimensions.filter(dimension => !dimensionFieldsAsMeasure.some(measure => measure.name === dimension.name));
 
     // Extract data for the line chart
     const lineData = data.map(row => ({
-      x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
-      y: hasMeasureFields ? row[measures[0].name].value : row[dimensions[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
-      dimensions: getDimensionDetails(row, dimensions),
+      x: xDimensionFields.length >= 1 ? getDimensionLabel(row, xDimensionFields) : 'N/A',
+      y: hasMeasureFields ? row[measures[0].name].value : row[xDimensionFields[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
+      dimensions: getDimensionDetails(row, xDimensionFields),
       measures: hasMeasureFields ? getMeasureDetails(row, measures) : [],
     }));
 
     // Extract data for the bar chart (for multiple measures, we'll use the first measure)
     const barData = data.map(row => ({
-      x: dimensions.length >= 1 ? getDimensionLabel(row, dimensions) : 'N/A',
-      y: hasMeasureFields ? row[measures[0].name].value : row[dimensions[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
-      dimensions: getDimensionDetails(row, dimensions),
+      x: xDimensionFields.length >= 1 ? getDimensionLabel(row, xDimensionFields) : 'N/A',
+      y: hasMeasureFields ? row[measures[0].name].value : row[xDimensionFields[0].name].value, // Use the first measure if available, else use the first numeric dimension as Y-axis
+      dimensions: getDimensionDetails(row, xDimensionFields),
       measures: hasMeasureFields ? getMeasureDetails(row, measures) : [],
     }));
 
@@ -144,7 +132,7 @@ looker.plugins.visualizations.add({
         .attr('fill', config.barColor) // Use the selected bar color from options
         .on('mouseover', function (event, d) {
           tooltip.style('visibility', 'visible')
-            .html(`<strong>${dimensions.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : dimensions.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${hasMeasureFields ? measures[0].name : 'Y-Axis'}: </strong>${d.y}`)
+            .html(`<strong>${xDimensionFields.length === 3 ? 'Dimension 1 - Dimension 2 - Dimension 3' : xDimensionFields.length === 2 ? 'Dimension 1 - Dimension 2' : 'Dimension 1'}: </strong>${d.x}<br><strong>${hasMeasureFields ? measures[0].name : 'Y-Axis'}: </strong>${d.y}`)
             .style('left', (event.pageX + 10) + 'px') // Add a small offset to avoid hiding the tooltip
             .style('top', (event.pageY - 10) + 'px');
         })
