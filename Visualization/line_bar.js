@@ -41,8 +41,8 @@ looker.plugins.visualizations.add({
     // Remove any existing chart before creating a new one
     d3.select('#custom-combined-chart').selectAll('*').remove();
 
-    const width = 600; // Adjust the desired width of the SVG
-    const height = 400; // Adjust the desired height of the SVG
+    const width = 1000; // Adjust the desired width of the SVG
+    const height = 600; // Adjust the desired height of the SVG
     const margin = { top: 40, right: 20, bottom: 80, left: 60 }; // Increased bottom margin for x-axis label and legend
 
     // Extract dimensions and measures from queryResponse
