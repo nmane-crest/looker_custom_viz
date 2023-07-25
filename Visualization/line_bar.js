@@ -132,6 +132,7 @@ looker.plugins.visualizations.add({
           // Add any desired interactivity for the bar chart here
         });
 
+      // Add axes for the bar chart
       const xAxis = barChart.append('g')
         .attr('transform', `translate(0,${chartHeight})`)
         .call(d3.axisBottom(xScale).tickSizeOuter(0))
@@ -153,9 +154,11 @@ looker.plugins.visualizations.add({
         .style('fill', 'black') // Set x-axis label color to black
         .text(config.xAxisLabel);
 
-      // Hide y-axis line and ticks
+      // Hide axis lines and ticks
       xAxis.select('.domain').remove();
       xAxis.selectAll('.tick line').remove();
+      yAxis.select('.domain').remove();
+      yAxis.selectAll('.tick line').remove();
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -175,7 +178,7 @@ looker.plugins.visualizations.add({
         .attr('stroke-width', 2)
         .attr('d', line);
 
-    // Add axes for the line chart
+      // Add axes for the line chart
       const xAxis = lineChart.append('g')
         .attr('transform', `translate(0,${chartHeight})`)
         .call(d3.axisBottom(xScale).tickSizeOuter(0))
@@ -198,10 +201,11 @@ looker.plugins.visualizations.add({
         .style('fill', 'black') // Set y-axis label color to black
         .text(config.yAxisLabel);
 
-      // Hide xAxis line and ticks
+      // Hide axis lines and ticks
+      xAxis.select('.domain').remove();
+      xAxis.selectAll('.tick line').remove();
       yAxis.select('.domain').remove();
       yAxis.selectAll('.tick line').remove();
-
     }
 
     // Add legend
