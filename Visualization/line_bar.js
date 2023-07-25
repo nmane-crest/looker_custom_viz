@@ -132,8 +132,7 @@ looker.plugins.visualizations.add({
           // Add any desired interactivity for the bar chart here
         });
 
-      // Add axes for the bar chart
-      barChart.append('g')
+      const xAxis = barChart.append('g')
         .attr('transform', `translate(0,${chartHeight})`)
         .call(d3.axisBottom(xScale).tickSizeOuter(0))
         .selectAll('text')
@@ -141,7 +140,7 @@ looker.plugins.visualizations.add({
         .attr('transform', 'rotate(-45) translate(-10, -10)')
         .style('fill', 'black'); // Set x-axis labels color to black
 
-      barChart.append('g')
+      const yAxis = barChart.append('g')
         .call(d3.axisLeft(yBarScale))
         .style('fill', 'black'); // Set y-axis labels color to black
 
@@ -153,8 +152,10 @@ looker.plugins.visualizations.add({
         .attr('text-anchor', 'middle')
         .style('fill', 'black') // Set x-axis label color to black
         .text(config.xAxisLabel);
-      // Hide x-axis line
-      barChart.select('.domain').remove();
+
+      // Hide y-axis line and ticks
+      yAxis.select('.domain').remove();
+      yAxis.selectAll('.tick line').remove();
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -174,8 +175,8 @@ looker.plugins.visualizations.add({
         .attr('stroke-width', 2)
         .attr('d', line);
 
-      // Add axes for the line chart
-      lineChart.append('g')
+    // Add axes for the line chart
+      const xAxis = lineChart.append('g')
         .attr('transform', `translate(0,${chartHeight})`)
         .call(d3.axisBottom(xScale).tickSizeOuter(0))
         .selectAll('text')
@@ -183,7 +184,7 @@ looker.plugins.visualizations.add({
         .attr('transform', 'rotate(-45) translate(-10, -10)')
         .style('fill', 'black'); // Set x-axis labels color to black
 
-      lineChart.append('g')
+      const yAxis = lineChart.append('g')
         .call(d3.axisLeft(yLineScale))
         .style('fill', 'black'); // Set y-axis labels color to black
 
@@ -196,8 +197,11 @@ looker.plugins.visualizations.add({
         .attr('text-anchor', 'middle')
         .style('fill', 'black') // Set y-axis label color to black
         .text(config.yAxisLabel);
-      // Hide y-axis line
-      lineChart.select('.domain').remove();
+
+      // Hide y-axis line and ticks
+      yAxis.select('.domain').remove();
+      yAxis.selectAll('.tick line').remove();
+
     }
 
     // Add legend
