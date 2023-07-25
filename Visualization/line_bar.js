@@ -35,7 +35,7 @@ looker.plugins.visualizations.add({
   },
   create: function (element, config) {
     // Create a container for the chart with CSS style to center the content
-    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;"></div>';
+    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; width: 100%; height: 100%;"></div>';
   },
   update: function (data, element, config, queryResponse) {
     // Remove any existing chart before creating a new one
