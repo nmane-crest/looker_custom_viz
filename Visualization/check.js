@@ -11,22 +11,15 @@ looker.plugins.visualizations.add({
         this.container.style.alignItems = "center"; // Center elements horizontally
         this.container.style.marginTop = "10px";
         this.container.style.fontSize = "14px"; // Add font size
-        this.container.style.fontFamily = "Arial"; // Add font family
-
-        // Add click event to the first label (index 0)
-        this.container.addEventListener("click", () => {
-            const firstLabel = this.container.querySelector("#label_0");
-            if (firstLabel) {
-                window.open("https://www.google.com", "_blank");
-            }
-        });
+        this.container.style.fontFamily = "inherit"; // Add font family
 
         // Add style to indicate clickable label
         const style = document.createElement("style");
         style.innerHTML = `
-            #info > div:nth-child(odd):hover {
+            #info > div:first-child:hover {
                 text-decoration: underline;
                 cursor: pointer;
+                color: blue;
             }
         `;
         this.container.appendChild(style);
@@ -66,9 +59,13 @@ looker.plugins.visualizations.add({
 
             if ((index + 1) % 2 == 1) {
                 const label = document.createElement("span");
-                label.setAttribute("id", `label_${index / 2}`);
                 label.style.cursor = "pointer"; // Add pointer cursor to clickable label
                 label.textContent = value + ":";
+                if (index === 0) {
+                    label.addEventListener("click", () => {
+                        window.open("https://crestdatasys.backstory.chronicle.security/alerts", "_blank");
+                    });
+                }
                 fieldElement.appendChild(label);
             } else {
                 fieldElement.style.color = "blue";
