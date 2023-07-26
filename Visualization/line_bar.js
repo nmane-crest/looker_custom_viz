@@ -198,7 +198,7 @@ looker.plugins.visualizations.add({
         .attr('x', -chartHeight / 2)
         .attr('y', -margin.left + 10)
         .attr('text-anchor', 'middle')
-        .style('fill', 'black') // Set y-axis label color to black
+        .style('fill', 'white') // Set y-axis label color to white
         .text(config.yAxisLabel);
 
       // Hide axis lines and ticks
