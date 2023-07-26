@@ -63,11 +63,6 @@ looker.plugins.visualizations.add({
                 const label = document.createElement("span");
                 label.style.cursor = "pointer"; // Add pointer cursor to clickable label
                 label.textContent = value + ":";
-                if (index === 0) {
-                    label.addEventListener("click", () => {
-                        window.open("https://crestdatasys.backstory.chronicle.security/alerts", "_blank");
-                    });
-                }
                 label.addEventListener("mouseenter", () => {
                     label.style.color = "blue"; // Change color to blue on hover
                 });
@@ -78,6 +73,18 @@ looker.plugins.visualizations.add({
             } else {
                 fieldElement.style.color = "blue";
                 fieldElement.textContent = value;
+                label.style.cursor = "pointer"; // Add pointer cursor to clickable label
+                label.addEventListener("click", () => {
+                    label.addEventListener("click", () => {
+                        window.open("https://crestdatasys.backstory.chronicle.security/alerts", "_blank");
+                    });
+                });
+                label.addEventListener("mouseenter", () => {
+                    label.style.color = "green"; // Change color to green on hover
+                });
+                label.addEventListener("mouseleave", () => {
+                    label.style.color = "initial"; // Reset color on mouse leave
+                });
             }
             fieldDataElement.appendChild(fieldElement);
         });
