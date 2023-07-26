@@ -10,15 +10,17 @@ looker.plugins.visualizations.add({
         this.container.style.flexDirection = "column"; // Display elements below each other
         this.container.style.alignItems = "center"; // Center elements horizontally
         this.container.style.marginTop = "10px";
-        this.container.style.fontSize = "14px"; // Add font size
-        this.container.style.fontFamily = "inherit"; // Add font family
+        this.container.style.fontSize = "16px"; // Add font size
+        this.container.style.fontFamily = "Arial"; // Add font family
 
-        // Add style to indicate clickable label
+        // Add style to indicate clickable label and hover effect
         const style = document.createElement("style");
         style.innerHTML = `
+            #info > div:first-child {
+                cursor: pointer;
+            }
             #info > div:first-child:hover {
                 text-decoration: underline;
-                cursor: pointer;
                 color: blue;
             }
         `;
