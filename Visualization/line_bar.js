@@ -113,11 +113,11 @@ looker.plugins.visualizations.add({
         .selectAll('.domain, .tick line')
         .attr('stroke', 'none'); // Hide the axis line and marks
 
-      // Add horizontal grid lines for the bar chart
-      gridGroup.append('g')
-        .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yBarScale.ticks(5)).tickFormat(''))
-        .selectAll('.tick line')
-        .attr('stroke', '#ddd');
+      // // Add horizontal grid lines for the bar chart
+      // gridGroup.append('g')
+      //   .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yBarScale.ticks(5)).tickFormat(''))
+      //   .selectAll('.tick line')
+      //   .attr('stroke', '#ddd');
     }
 
     // Conditionally render the line chart based on the configuration option
