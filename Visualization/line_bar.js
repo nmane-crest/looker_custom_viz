@@ -110,7 +110,8 @@ looker.plugins.visualizations.add({
         .attr('class', 'axis')
         .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
         .attr('transform', `translate(0,${chartHeight})`)
-        .selectAll('.domain, .tick line').remove();
+        .selectAll('.domain, .tick line')
+        .attr('stroke', 'none'); // Hide the axis line and marks
 
       // Add horizontal grid lines for the bar chart
       gridGroup.append('g')
@@ -158,7 +159,8 @@ looker.plugins.visualizations.add({
         .attr('class', 'axis')
         .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
         .attr('transform', `translate(0,${chartHeight})`)
-        .selectAll('.domain, .tick line').remove();
+        .selectAll('.domain, .tick line')
+        .attr('stroke', 'none'); // Hide the axis line and marks
 
       // Add horizontal grid lines for the line chart
       gridGroup.append('g')
