@@ -90,7 +90,8 @@ looker.plugins.visualizations.add({
 
       // Add y-axis labels for the bar chart
       barChart.append('g')
-        .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')))
+        .attr('stroke-width','0px')
+        .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')).tickSize(0))
         .selectAll('text')
         .attr('font-family', 'Arial')
         .attr('font-size', '14px');
@@ -112,12 +113,6 @@ looker.plugins.visualizations.add({
         .attr('transform', `translate(0,${chartHeight})`)
         .selectAll('.domain, .tick line')
         .attr('stroke', 'none'); // Hide the axis line and marks
-
-      // // Add horizontal grid lines for the bar chart
-      // gridGroup.append('g')
-      //   .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yBarScale.ticks(5)).tickFormat(''))
-      //   .selectAll('.tick line')
-      //   .attr('stroke', '#ddd');
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -139,7 +134,8 @@ looker.plugins.visualizations.add({
 
       // Add y-axis labels for the line chart
       lineChart.append('g')
-        .call(d3.axisLeft(yLineScale).ticks(5).tickFormat(d3.format('.2s')))
+        .attr('stroke-width','0px')
+        .call(d3.axisLeft(yLineScale).ticks(5).tickFormat(d3.format('.2s')).tickSize(0))
         .selectAll('text')
         .attr('font-family', 'Arial')
         .attr('font-size', '14px');
@@ -163,11 +159,13 @@ looker.plugins.visualizations.add({
         .attr('stroke', 'none'); // Hide the axis line and marks
 
 
-      // // Add horizontal grid lines for the line chart
-      // gridGroup.append('g')
-      //   .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
-      //   .selectAll('.tick line')
-      //   .attr('stroke', '#ddd');
+      // Add horizontal grid lines for the line chart
+      gridGroup.append('g')
+        .attr('stroke-width','0px')
+        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
+        .selectAll('.tick line')
+        .attr('stroke', '#ddd')
+        .attr('stroke-width','1px');
     }
   },
 });
