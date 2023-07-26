@@ -15,7 +15,7 @@ looker.plugins.visualizations.add({
   },
   create: function (element, config) {
     // Create a container for the chart with CSS style to fit the whole width of the div
-    element.innerHTML = '<div id="custom-combined-chart" style="width: 100%; height: 400px; position: relative;"></div>';
+    element.innerHTML = '<div id="custom-combined-chart" style="width: 100%; height: 400px; position: relative; font-family: inherit; font-size: 12px;"></div>';
   },
   update: function (data, element, config, queryResponse) {
     // Remove any existing chart before creating a new one
@@ -112,6 +112,15 @@ looker.plugins.visualizations.add({
       // Remove the horizontal axis line and marks from the bar chart
       barXAxis.select('.domain').remove();
       barXAxis.selectAll('.tick line').remove();
+
+      // Add horizontal grid lines for the bar chart
+      barChart.append('g')
+        .attr('class', 'grid')
+        .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yBarScale.ticks(5)))
+        .selectAll('.tick')
+        .selectAll('line')
+        .attr('stroke', '#ddd')
+        .attr('stroke-dasharray', '2, 2');
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -160,6 +169,15 @@ looker.plugins.visualizations.add({
       // Remove the horizontal axis line and marks from the line chart
       lineXAxis.select('.domain').remove();
       lineXAxis.selectAll('.tick line').remove();
+
+      // Add horizontal grid lines for the line chart
+      lineChart.append('g')
+        .attr('class', 'grid')
+        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yLineScale.ticks(5)))
+        .selectAll('.tick')
+        .selectAll('line')
+        .attr('stroke', '#ddd')
+        .attr('stroke-dasharray', '2, 2');
     }
   },
 });
