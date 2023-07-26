@@ -86,14 +86,14 @@ looker.plugins.visualizations.add({
         .attr('y', d => yBarScale(d.y))
         .attr('width', xScale.bandwidth())
         .attr('height', d => chartHeight - yBarScale(d.y))
-        .attr('fill', 'light Purple');
+        .attr('fill', 'Purple');
 
       // Add y-axis labels for the bar chart
       barChart.append('g')
         .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')))
         .selectAll('text')
         .attr('font-family', 'Arial')
-        .attr('font-size', '16px');
+        .attr('font-size', '14px');
 
       // Add x-axis label for the bar chart
       barChart.append('text')
@@ -101,7 +101,7 @@ looker.plugins.visualizations.add({
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('fill', '#000')
         .attr('font-family', 'Arial')
-        .attr('font-size', '16px')
+        .attr('font-size', '14px')
         .attr('text-anchor', 'middle')
         .text(dimensions[0].label);
 
@@ -133,8 +133,8 @@ looker.plugins.visualizations.add({
       lineChart.append('path')
         .datum(lineData)
         .attr('fill', 'none')
-        .attr('stroke', 'blue')
-        .attr('stroke-width', 2)
+        .attr('stroke', 'green')
+        .attr('stroke-width', 3)
         .attr('d', line);
 
       // Add y-axis labels for the line chart
@@ -142,7 +142,7 @@ looker.plugins.visualizations.add({
         .call(d3.axisLeft(yLineScale).ticks(5).tickFormat(d3.format('.2s')))
         .selectAll('text')
         .attr('font-family', 'Arial')
-        .attr('font-size', '16px');
+        .attr('font-size', '14px');
 
       // Add x-axis label for the line chart
       lineChart.append('text')
@@ -150,7 +150,7 @@ looker.plugins.visualizations.add({
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('fill', '#000')
         .attr('font-family', 'Arial')
-        .attr('font-size', '16px')
+        .attr('font-size', '14px')
         .attr('text-anchor', 'middle')
         .text(dimensions[0].label);
 
@@ -159,14 +159,15 @@ looker.plugins.visualizations.add({
         .attr('class', 'axis')
         .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
         .attr('transform', `translate(0,${chartHeight})`)
-        .selectAll('.tick line')
-        .attr('stroke', 'none'); // Hide the axis marks, but keep the tick text
+        .selectAll('.domain, .tick line')
+        .attr('stroke', 'none'); // Hide the axis line and marks
 
-      // Add horizontal grid lines for the line chart
-      gridGroup.append('g')
-        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
-        .selectAll('.tick line')
-        .attr('stroke', '#ddd');
+
+      // // Add horizontal grid lines for the line chart
+      // gridGroup.append('g')
+      //   .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
+      //   .selectAll('.tick line')
+      //   .attr('stroke', '#ddd');
     }
   },
 });
