@@ -16,10 +16,10 @@ looker.plugins.visualizations.add({
         // Add style to indicate clickable label and hover effect
         const style = document.createElement("style");
         style.innerHTML = `
-            #info > div:first-child {
+            #info > div:first-child span {
                 cursor: pointer;
             }
-            #info > div:first-child:hover {
+            #info > div:first-child span:hover {
                 text-decoration: underline;
                 color: blue;
             }
@@ -68,6 +68,12 @@ looker.plugins.visualizations.add({
                         window.open("https://crestdatasys.backstory.chronicle.security/alerts", "_blank");
                     });
                 }
+                label.addEventListener("mouseenter", () => {
+                    label.style.color = "blue"; // Change color to blue on hover
+                });
+                label.addEventListener("mouseleave", () => {
+                    label.style.color = "initial"; // Reset color on mouse leave
+                });
                 fieldElement.appendChild(label);
             } else {
                 fieldElement.style.color = "blue";
