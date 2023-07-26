@@ -35,15 +35,15 @@ looker.plugins.visualizations.add({
   },
   create: function (element, config) {
     // Create a container for the chart with CSS style to center the content
-    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; width: 100%; height: 100%;"></div>';
+    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; width: 1074px; height: 212px;"></div>';
   },
   update: function (data, element, config, queryResponse) {
     // Remove any existing chart before creating a new one
     d3.select('#custom-combined-chart').selectAll('*').remove();
 
     // Get the dimensions of the parent container
-    const parentWidth = element.clientWidth;
-    const parentHeight = element.clientHeight;
+    const parentWidth = 1074;
+    const parentHeight = 212;
 
     // Calculate the number of data points in the X-axis
     const numDataPoints = data.length;
@@ -83,18 +83,18 @@ looker.plugins.visualizations.add({
     const xDimensions = dimensions.filter(dimension => dimension.name !== measures[0].name);
 
     // Calculate the chart's width and height based on whether the bar chart is displayed
-    const chartWidth = config.showBarChart ? width - margin.left - margin.right : width;
-    const chartHeight = height - margin.top - margin.bottom;
+    const chartWidth = config.showBarChart ? 1074 - margin.left - margin.right : 1074;
+    const chartHeight = 212 - margin.top - margin.bottom;
 
     // Calculate the required translation to center the chart within the SVG
-    const translateX = (width - chartWidth) / 2 + margin.left;
+    const translateX = 0;
 
     const svg = d3.select('#custom-combined-chart')
       .append('svg')
       .attr('width', '100%')
       .attr('height', '100%')
-      .attr('viewBox', `0 0 ${width} ${height}`) // Added viewBox to make it responsive
-      .attr('preserveAspectRatio', 'xMidYMid meet'); // Added preserveAspectRatio to maintain aspect ratio
+      .attr('viewBox', `0 0 ${chartWidth + margin.left + margin.right} ${chartHeight + margin.top + margin.bottom}`) // Updated viewBox to include margins
+      .attr('preserveAspectRatio', 'xMinYMin meet'); // Adjusted preserveAspectRatio to start from the left
 
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
