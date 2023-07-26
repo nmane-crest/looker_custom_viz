@@ -98,6 +98,8 @@ looker.plugins.visualizations.add({
         .attr('fill', '#000')
         .attr('font-weight', 'bold')
         .attr('text-anchor', 'start')
+        .attr('font-family', 'inherit')
+        .attr('font-size', '12px')
         .text(measures[0].label);
 
       // Add x-axis label for the bar chart
@@ -105,6 +107,7 @@ looker.plugins.visualizations.add({
         .attr('x', chartWidth / 2)
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('fill', '#000')
+        .attr('font-family', 'inherit')
         .attr('font-size', '12px')
         .attr('text-anchor', 'middle')
         .text(dimensions[0].label);
@@ -150,6 +153,8 @@ looker.plugins.visualizations.add({
         .attr('fill', '#000')
         .attr('font-weight', 'bold')
         .attr('text-anchor', 'start')
+        .attr('font-family', 'inherit')
+        .attr('font-size', '12px')
         .text(measures[0].label);
 
       // Add x-axis label for the line chart
@@ -157,6 +162,7 @@ looker.plugins.visualizations.add({
         .attr('x', chartWidth / 2)
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('fill', '#000')
+        .attr('font-family', 'inherit')
         .attr('font-size', '12px')
         .attr('text-anchor', 'middle')
         .text(dimensions[0].label);
