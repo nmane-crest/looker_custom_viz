@@ -53,6 +53,11 @@ looker.plugins.visualizations.add({
       .attr('width', width)
       .attr('height', height);
 
+    // Add a group for grid lines
+    const gridGroup = svg.append('g')
+      .attr('class', 'grid')
+      .attr('transform', `translate(${translateX},${margin.top})`);
+
     // Create scales and axes for both charts
     const xScale = d3.scaleBand()
       .domain(lineData.map(d => d.x))
@@ -83,11 +88,6 @@ looker.plugins.visualizations.add({
         .attr('height', d => chartHeight - yBarScale(d.y))
         .attr('fill', 'orange');
 
-      // Add x-axis for the bar chart (without the horizontal axis line and marks)
-      const barXAxis = barChart.append('g')
-        .attr('transform', `translate(0,${chartHeight})`)
-        .call(d3.axisBottom(xScale));
-
       // Add y-axis labels for the bar chart
       barChart.append('g')
         .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')))
@@ -110,15 +110,16 @@ looker.plugins.visualizations.add({
         .text(dimensions[0].label);
 
       // Remove the horizontal axis line and marks from the bar chart
-      barXAxis.select('.domain').remove();
-      barXAxis.selectAll('.tick line').remove();
+      barChart.append('g')
+        .attr('class', 'axis')
+        .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
+        .attr('transform', `translate(0,${chartHeight})`)
+        .selectAll('.domain, .tick line').remove();
 
       // Add horizontal grid lines for the bar chart
-      barChart.append('g')
-        .attr('class', 'grid')
-        .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yBarScale.ticks(5)).tickFormat(''))
-        .selectAll('.tick')
-        .selectAll('line')
+      gridGroup.append('g')
+        .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yBarScale.ticks(5)).tickFormat(''))
+        .selectAll('.tick line')
         .attr('stroke', '#ddd');
     }
 
@@ -138,11 +139,6 @@ looker.plugins.visualizations.add({
         .attr('stroke', 'blue')
         .attr('stroke-width', 2)
         .attr('d', line);
-
-      // Add x-axis for the line chart (without the horizontal axis line and marks)
-      const lineXAxis = lineChart.append('g')
-        .attr('transform', `translate(0,${chartHeight})`)
-        .call(d3.axisBottom(xScale));
 
       // Add y-axis labels for the line chart
       lineChart.append('g')
@@ -166,15 +162,16 @@ looker.plugins.visualizations.add({
         .text(dimensions[0].label);
 
       // Remove the horizontal axis line and marks from the line chart
-      lineXAxis.select('.domain').remove();
-      lineXAxis.selectAll('.tick line').remove();
+      lineChart.append('g')
+        .attr('class', 'axis')
+        .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
+        .attr('transform', `translate(0,${chartHeight})`)
+        .selectAll('.domain, .tick line').remove();
 
       // Add horizontal grid lines for the line chart
-      lineChart.append('g')
-        .attr('class', 'grid')
-        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yLineScale.ticks(5)).tickFormat(''))
-        .selectAll('.tick')
-        .selectAll('line')
+      gridGroup.append('g')
+        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
+        .selectAll('.tick line')
         .attr('stroke', '#ddd');
     }
   },
