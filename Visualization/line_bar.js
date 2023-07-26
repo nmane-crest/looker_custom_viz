@@ -108,20 +108,14 @@ looker.plugins.visualizations.add({
       // Remove the horizontal axis line and marks from the bar chart
       barChart.append('g')
         .attr('class', 'axis')
-        .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(0))
+        .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
         .attr('transform', `translate(0,${chartHeight})`)
         .selectAll('.domain, .tick line')
-        .remove(); // Hide the axis line and marks
+        .attr('stroke', 'none'); // Hide the axis line and marks
 
       // Add horizontal grid lines for the bar chart
       gridGroup.append('g')
         .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yBarScale.ticks(5)).tickFormat(''))
-        .selectAll('.tick line')
-        .attr('stroke', '#ddd');
-
-      // Add vertical grid lines for the bar chart
-      gridGroup.append('g')
-        .call(d3.axisBottom(xScale).tickSize(chartHeight).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartHeight).tickValues(xScale.domain()))
         .selectAll('.tick line')
         .attr('stroke', '#ddd');
     }
@@ -163,20 +157,14 @@ looker.plugins.visualizations.add({
       // Remove the horizontal axis line and marks from the line chart
       lineChart.append('g')
         .attr('class', 'axis')
-        .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(0))
+        .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
         .attr('transform', `translate(0,${chartHeight})`)
-        .selectAll('.domain, .tick line')
-        .remove(); // Hide the axis line and marks
+        .selectAll('.tick line')
+        .attr('stroke', 'none'); // Hide the axis marks, but keep the tick text
 
       // Add horizontal grid lines for the line chart
       gridGroup.append('g')
         .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
-        .selectAll('.tick line')
-        .attr('stroke', '#ddd');
-
-      // Add vertical grid lines for the line chart
-      gridGroup.append('g')
-        .call(d3.axisBottom(xScale).tickSize(chartHeight).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartHeight).tickValues(xScale.domain()))
         .selectAll('.tick line')
         .attr('stroke', '#ddd');
     }
