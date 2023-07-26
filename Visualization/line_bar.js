@@ -15,7 +15,7 @@ looker.plugins.visualizations.add({
   },
   create: function (element, config) {
     // Create a container for the chart with CSS style to fit the whole width of the div
-    element.innerHTML = '<div id="custom-combined-chart" style="width: 100%; height: 400px; position: relative; font-family: inherit; font-size: 12px;"></div>';
+    element.innerHTML = '<div id="custom-combined-chart" style="width: 100%; height: 400px; position: relative;"></div>';
   },
   update: function (data, element, config, queryResponse) {
     // Remove any existing chart before creating a new one
@@ -91,16 +91,9 @@ looker.plugins.visualizations.add({
       // Add y-axis labels for the bar chart
       barChart.append('g')
         .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')))
-        .append('text')
-        .attr('x', 2)
-        .attr('y', yBarScale(yBarScale.ticks().pop()) + 0.5)
-        .attr('dy', '0.32em')
-        .attr('fill', '#000')
-        .attr('font-weight', 'bold')
-        .attr('text-anchor', 'start')
+        .selectAll('text')
         .attr('font-family', 'inherit')
-        .attr('font-size', '12px')
-        .text(measures[0].label);
+        .attr('font-size', '12px');
 
       // Add x-axis label for the bar chart
       barChart.append('text')
@@ -146,16 +139,9 @@ looker.plugins.visualizations.add({
       // Add y-axis labels for the line chart
       lineChart.append('g')
         .call(d3.axisLeft(yLineScale).ticks(5).tickFormat(d3.format('.2s')))
-        .append('text')
-        .attr('x', 2)
-        .attr('y', yLineScale(yLineScale.ticks().pop()) + 0.5)
-        .attr('dy', '0.32em')
-        .attr('fill', '#000')
-        .attr('font-weight', 'bold')
-        .attr('text-anchor', 'start')
+        .selectAll('text')
         .attr('font-family', 'inherit')
-        .attr('font-size', '12px')
-        .text(measures[0].label);
+        .attr('font-size', '12px');
 
       // Add x-axis label for the line chart
       lineChart.append('text')
