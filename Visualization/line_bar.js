@@ -86,22 +86,22 @@ looker.plugins.visualizations.add({
         .attr('y', d => yBarScale(d.y))
         .attr('width', xScale.bandwidth())
         .attr('height', d => chartHeight - yBarScale(d.y))
-        .attr('fill', 'orange');
+        .attr('fill', 'light Purple');
 
       // Add y-axis labels for the bar chart
       barChart.append('g')
         .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')))
         .selectAll('text')
-        .attr('font-family', 'inherit')
-        .attr('font-size', '12px');
+        .attr('font-family', 'Arial')
+        .attr('font-size', '16px');
 
       // Add x-axis label for the bar chart
       barChart.append('text')
         .attr('x', chartWidth / 2)
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('fill', '#000')
-        .attr('font-family', 'inherit')
-        .attr('font-size', '12px')
+        .attr('font-family', 'Arial')
+        .attr('font-size', '16px')
         .attr('text-anchor', 'middle')
         .text(dimensions[0].label);
 
@@ -141,16 +141,16 @@ looker.plugins.visualizations.add({
       lineChart.append('g')
         .call(d3.axisLeft(yLineScale).ticks(5).tickFormat(d3.format('.2s')))
         .selectAll('text')
-        .attr('font-family', 'inherit')
-        .attr('font-size', '12px');
+        .attr('font-family', 'Arial')
+        .attr('font-size', '16px');
 
       // Add x-axis label for the line chart
       lineChart.append('text')
         .attr('x', chartWidth / 2)
         .attr('y', chartHeight + margin.bottom - 10)
         .attr('fill', '#000')
-        .attr('font-family', 'inherit')
-        .attr('font-size', '12px')
+        .attr('font-family', 'Arial')
+        .attr('font-size', '16px')
         .attr('text-anchor', 'middle')
         .text(dimensions[0].label);
 
