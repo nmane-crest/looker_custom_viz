@@ -14,14 +14,14 @@ looker.plugins.visualizations.add({
     },
   },
   create: function (element, config) {
-    // Create a container for the chart with CSS style to center the content
-    element.innerHTML = '<div id="custom-combined-chart" style="display: flex; justify-content: center; align-items: center;"></div>';
+    // Create a container for the chart with CSS style to fit the whole width of the div
+    element.innerHTML = '<div id="custom-combined-chart" style="width: 100%; height: 400px; position: relative;"></div>';
   },
   update: function (data, element, config, queryResponse) {
     // Remove any existing chart before creating a new one
     d3.select('#custom-combined-chart').selectAll('*').remove();
 
-    const width = 600; // Adjust the desired width of the SVG
+    const width = element.clientWidth; // Use the width of the div as the SVG width
     const height = 400; // Adjust the desired height of the SVG
     const margin = { top: 40, right: 20, bottom: 40, left: 40 };
 
