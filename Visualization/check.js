@@ -71,20 +71,20 @@ looker.plugins.visualizations.add({
                 });
                 fieldElement.appendChild(label);
             } else {
-                fieldElement.style.color = "blue";
-                fieldElement.textContent = value;
+                const label = document.createElement("span");
+                label.style.color = "blue";
+                label.textContent = value; // Add colon to the label in the else condition
                 label.style.cursor = "pointer"; // Add pointer cursor to clickable label
                 label.addEventListener("click", () => {
-                    label.addEventListener("click", () => {
-                        window.open("https://crestdatasys.backstory.chronicle.security/alerts", "_blank");
-                    });
+                    window.open("https://crestdatasys.backstory.chronicle.security/alerts", "_blank");
                 });
                 label.addEventListener("mouseenter", () => {
                     label.style.color = "green"; // Change color to green on hover
                 });
                 label.addEventListener("mouseleave", () => {
-                    label.style.color = "initial"; // Reset color on mouse leave
+                    label.style.color = "blue"; // Reset color on mouse leave
                 });
+                fieldElement.appendChild(label);
             }
             fieldDataElement.appendChild(fieldElement);
         });
