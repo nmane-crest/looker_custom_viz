@@ -116,11 +116,10 @@ looker.plugins.visualizations.add({
       // Add horizontal grid lines for the bar chart
       barChart.append('g')
         .attr('class', 'grid')
-        .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yBarScale.ticks(5)))
+        .call(d3.axisLeft(yBarScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yBarScale.ticks(5)).tickFormat(''))
         .selectAll('.tick')
         .selectAll('line')
-        .attr('stroke', '#ddd')
-        .attr('stroke-dasharray', '2, 2');
+        .attr('stroke', '#ddd');
     }
 
     // Conditionally render the line chart based on the configuration option
@@ -173,11 +172,10 @@ looker.plugins.visualizations.add({
       // Add horizontal grid lines for the line chart
       lineChart.append('g')
         .attr('class', 'grid')
-        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yLineScale.ticks(5)))
+        .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickPadding(10).tickValues(yLineScale.ticks(5)).tickFormat(''))
         .selectAll('.tick')
         .selectAll('line')
-        .attr('stroke', '#ddd')
-        .attr('stroke-dasharray', '2, 2');
+        .attr('stroke', '#ddd');
     }
   },
 });
