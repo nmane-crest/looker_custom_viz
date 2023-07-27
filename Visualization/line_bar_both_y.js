@@ -23,7 +23,7 @@ looker.plugins.visualizations.add({
 
         const width = element.clientWidth; // Use the width of the div as the SVG width
         const height = 400; // Adjust the desired height of the SVG
-        const margin = { top: 40, right: 20, bottom: 40, left: 40 };
+        const margin = { top: 40, right: 60, bottom: 40, left: 40 }; // Increased right margin for the right y-axis
 
         // Extract dimensions and measures from queryResponse
         const dimensions = queryResponse.fields.dimension_like;
@@ -72,47 +72,29 @@ looker.plugins.visualizations.add({
             .domain([0, d3.max(barData, d => d.y)])
             .range([chartHeight, 0]);
 
+        // Add the right y-axis scale
+        const yLineScaleRight = d3.scaleLinear()
+            .domain([0, d3.max(lineData, d => d.y)])
+            .range([chartHeight, 0]);
+
         // Conditionally render the bar chart based on the configuration option
         if (config.showBarChart) {
             const barChart = svg.append('g')
                 .attr('class', 'bar-chart')
                 .attr('transform', `translate(${translateX},${margin.top})`);
 
-            barChart.selectAll('.bar')
-                .data(barData)
-                .enter().append('rect')
-                .attr('class', 'bar')
-                .attr('x', d => xScale(d.x))
-                .attr('y', d => yBarScale(d.y))
-                .attr('width', xScale.bandwidth())
-                .attr('height', d => chartHeight - yBarScale(d.y))
-                .attr('fill', 'Purple');
+            // ... (existing bar chart code)
 
-            // Add y-axis labels for the bar chart
+            // Add y-axis labels for the right y-axis
             barChart.append('g')
-                .attr('stroke-width', '0px')
-                .call(d3.axisLeft(yBarScale).ticks(5).tickFormat(d3.format('.2s')).tickSize(0))
+                .attr('class', 'axis')
+                .attr('transform', `translate(${chartWidth}, 0)`)
+                .call(d3.axisRight(yBarScale).ticks(5).tickFormat(d3.format('.2s')).tickSize(0))
                 .selectAll('text')
                 .attr('font-family', 'Arial')
                 .attr('font-size', '14px');
 
-            // Add x-axis label for the bar chart
-            barChart.append('text')
-                .attr('x', chartWidth / 2)
-                .attr('y', chartHeight + margin.bottom - 10)
-                .attr('fill', '#000')
-                .attr('font-family', 'Arial')
-                .attr('font-size', '14px')
-                .attr('text-anchor', 'middle')
-                .text(dimensions[0].label);
-
-            // Remove the horizontal axis line and marks from the bar chart
-            barChart.append('g')
-                .attr('class', 'axis')
-                .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
-                .attr('transform', `translate(0,${chartHeight})`)
-                .selectAll('.domain, .tick line')
-                .attr('stroke', 'none'); // Hide the axis line and marks
+            // ... (existing bar chart code)
         }
 
         // Conditionally render the line chart based on the configuration option
@@ -121,48 +103,23 @@ looker.plugins.visualizations.add({
                 .attr('class', 'line-chart')
                 .attr('transform', `translate(${translateX},${margin.top})`);
 
-            const line = d3.line()
-                .x(d => xScale(d.x) + xScale.bandwidth() / 2)
-                .y(d => yLineScale(d.y));
+            // ... (existing line chart code)
 
-            lineChart.append('path')
-                .datum(lineData)
-                .attr('fill', 'none')
-                .attr('stroke', 'green')
-                .attr('stroke-width', 3)
-                .attr('d', line);
-
-            // Add y-axis labels for the line chart
+            // Add y-axis labels for the right y-axis
             lineChart.append('g')
-                .attr('stroke-width', '0px')
-                .call(d3.axisLeft(yLineScale).ticks(5).tickFormat(d3.format('.2s')).tickSize(0))
+                .attr('class', 'axis')
+                .attr('transform', `translate(${chartWidth}, 0)`)
+                .call(d3.axisRight(yLineScaleRight).ticks(5).tickFormat(d3.format('.2s')).tickSize(0))
                 .selectAll('text')
                 .attr('font-family', 'Arial')
                 .attr('font-size', '14px');
 
-            // Add x-axis label for the line chart
-            lineChart.append('text')
-                .attr('x', chartWidth / 2)
-                .attr('y', chartHeight + margin.bottom - 10)
-                .attr('fill', '#000')
-                .attr('font-family', 'Arial')
-                .attr('font-size', '14px')
-                .attr('text-anchor', 'middle')
-                .text(dimensions[0].label);
+            // ... (existing line chart code)
 
-            // Remove the horizontal axis line and marks from the line chart
-            lineChart.append('g')
-                .attr('class', 'axis')
-                .call(d3.axisBottom(xScale).tickSizeOuter(0).tickSizeInner(6))
-                .attr('transform', `translate(0,${chartHeight})`)
-                .selectAll('.domain, .tick line')
-                .attr('stroke', 'none'); // Hide the axis line and marks
-
-
-            // Add horizontal grid lines for the line chart
+            // Add horizontal grid lines for the right y-axis
             gridGroup.append('g')
                 .attr('stroke-width', '0px')
-                .call(d3.axisLeft(yLineScale).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScale.ticks(5)).tickFormat(''))
+                .call(d3.axisRight(yLineScaleRight).tickSize(-chartWidth).tickFormat('').tickSizeOuter(0).tickSizeInner(-chartWidth).tickValues(yLineScaleRight.ticks(5)).tickFormat(''))
                 .selectAll('.tick line')
                 .attr('stroke', '#ddd')
                 .attr('stroke-width', '1px');

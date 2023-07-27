@@ -30,3 +30,9 @@ visualization: {
   file: "Visualization/line_bar.js"
   dependencies: ["https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"]
 }
+visualization: {
+  id: "line_bar_both_Y_axis"
+  label: "line_bar_both_Y_axis"
+  file: "Visualization/line_bar_both_y.js"
+  dependencies: ["https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"]
+}
