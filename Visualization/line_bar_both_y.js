@@ -171,5 +171,40 @@ looker.plugins.visualizations.add({
         // Remove the horizontal axis line and marks from both charts
         svg.selectAll('.axis .domain')
             .attr('stroke', 'none');
+
+        // Add legends for the chart types and measures on the y-axis
+        const legendGroup = svg.append('g')
+            .attr('class', 'legend-group')
+            .attr('transform', `translate(${containerWidth - margin.right},${margin.top})`);
+
+        const legendBarRect = legendGroup.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', 20)
+            .attr('height', 20)
+            .attr('fill', 'Purple');
+
+        const legendLineRect = legendGroup.append('rect')
+            .attr('x', 0)
+            .attr('y', 30)
+            .attr('width', 20)
+            .attr('height', 20)
+            .attr('fill', 'green');
+
+        const legendTextLeft = legendGroup.append('text')
+            .attr('x', 30)
+            .attr('y', 15)
+            .attr('fill', '#000')
+            .attr('font-family', 'Arial')
+            .attr('font-size', '14px')
+            .text(`${queryResponse.fields.measure_like[0].label} (Bar Chart)`);
+
+        const legendTextRight = legendGroup.append('text')
+            .attr('x', 30)
+            .attr('y', 45)
+            .attr('fill', '#000')
+            .attr('font-family', 'Arial')
+            .attr('font-size', '14px')
+            .text(`${queryResponse.fields.measure_like[1].label} (Line Chart)`);
     },
 });
