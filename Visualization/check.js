@@ -61,14 +61,7 @@ looker.plugins.visualizations.add({
 
             if ((index + 1) % 2 == 1) {
                 const label = document.createElement("span");
-                label.style.cursor = "pointer"; // Add pointer cursor to clickable label
                 label.textContent = value + ":";
-                label.addEventListener("mouseenter", () => {
-                    label.style.color = "blue"; // Change color to blue on hover
-                });
-                label.addEventListener("mouseleave", () => {
-                    label.style.color = "initial"; // Reset color on mouse leave
-                });
                 fieldElement.appendChild(label);
             } else {
                 const label = document.createElement("span");
