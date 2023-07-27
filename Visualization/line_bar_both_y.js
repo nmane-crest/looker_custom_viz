@@ -23,7 +23,7 @@ looker.plugins.visualizations.add({
 
         const containerWidth = element.clientWidth; // Use the width of the div as the container width
         const height = 400; // Adjust the desired height of the SVG
-        const margin = { top: 40, right: 80, bottom: 80, left: 40 }; // Increased bottom margin for the legends
+        const margin = { top: 40, right: 120, bottom: 100, left: 40 }; // Increased bottom and right margin for the legends and labels
 
         // Extract dimensions and measures from queryResponse
         const dimensions = queryResponse.fields.dimension_like;
@@ -154,33 +154,22 @@ looker.plugins.visualizations.add({
                 .text(dimensions[0].label);
         }
 
-        // Add a group for the legends
-        const legendsGroup = svg.append('g')
-            .attr('class', 'legends')
-            .attr('transform', `translate(${translateX},${margin.top + chartHeight + margin.bottom / 2})`); // Position below the x-axis label
+        // Add values on the x-axis
+        const xAxis = d3.axisBottom(showBarChart ? xScaleBar : xScaleLine)
+            .tickSize(0); // Remove ticks on the x-axis
+        svg.append('g')
+            .attr('transform', `translate(${translateX},${chartHeight + margin.top})`)
+            .call(xAxis)
+            .selectAll('text')
+            .attr('font-family', 'Arial')
+            .attr('font-size', '14px')
+            .style('text-anchor', 'end')
+            .attr('dx', '-0.8em')
+            .attr('dy', '-0.15em')
+            .attr('transform', 'rotate(-65)');
 
-        // Add y-axis legend for the bar chart
-        if (showBarChart) {
-            legendsGroup.append('text')
-                .attr('x', 0)
-                .attr('y', 0)
-                .attr('fill', '#000')
-                .attr('font-family', 'Arial')
-                .attr('font-size', '14px')
-                .attr('text-anchor', 'start')
-                .text(queryResponse.fields.measure_like[0].label);
-        }
-
-        // Add y-axis legend for the line chart
-        if (showLineChart) {
-            legendsGroup.append('text')
-                .attr('x', chartWidth + 20) // Adjust the spacing between legends if necessary
-                .attr('y', 0)
-                .attr('fill', '#000')
-                .attr('font-family', 'Arial')
-                .attr('font-size', '14px')
-                .attr('text-anchor', 'start')
-                .text(queryResponse.fields.measure_like[1].label);
-        }
+        // Remove the horizontal axis line and marks from both charts
+        svg.selectAll('.axis .domain')
+            .attr('stroke', 'none');
     },
 });
