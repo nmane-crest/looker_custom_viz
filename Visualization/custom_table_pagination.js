@@ -74,8 +74,13 @@ looker.plugins.visualizations.add({
         }
 
         // Create pagination controls
-        var pagination = document.createElement('ul');
-        pagination.className = 'pagination';
+        var pagination = element.querySelector('.pagination');
+        if (!pagination) {
+            pagination = document.createElement('ul');
+            pagination.className = 'pagination';
+            element.appendChild(pagination);
+        }
+        pagination.innerHTML = '';
 
         // Previous Page
         var prevLi = document.createElement('li');
@@ -114,8 +119,6 @@ looker.plugins.visualizations.add({
         // Add DataTables style class to pagination
         pagination.classList.add('pagination');
 
-        chart.appendChild(pagination);
-
         doneRendering()
     },
     updateTable: function (data, element, queryResponse, currentPage, rowsPerPage) {
@@ -146,46 +149,53 @@ looker.plugins.visualizations.add({
                 var td = document.createElement('td');
                 td.textContent = row[key].value;
                 rows.appendChild(td);
-            });
-            chart.appendChild(rows);
+        });
+        chart.appendChild(rows);
         }
-
-        // Update pagination controls
-        var pagination = element.querySelector('.pagination');
-        pagination.innerHTML = '';
-
-        // Previous Page
-        var prevLi = document.createElement('li');
-        prevLi.textContent = '«';
-        prevLi.addEventListener('click', function () {
-            if (currentPage > 1) {
-                currentPage--;
-                this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
-            }
-        }.bind(this)); // Bind context here
-        if (currentPage === 1) {
-            prevLi.classList.add('disabled');
-        }
-        pagination.appendChild(prevLi);
-
-        // Current Page
-        var currentPageLi = document.createElement('li');
-        currentPageLi.textContent = currentPage;
-        currentPageLi.classList.add('active');
-        pagination.appendChild(currentPageLi);
-
-        // Next Page
-        var nextLi = document.createElement('li');
-        nextLi.textContent = '»';
-        nextLi.addEventListener('click', function () {
-            if (currentPage < totalPages) {
-                currentPage++;
-                this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
-            }
-        }.bind(this)); // Bind context here
-        if (currentPage === totalPages) {
-            nextLi.classList.add('disabled');
-        }
-        pagination.appendChild(nextLi);
+                // Update pagination controls
+    var pagination = element.querySelector('.pagination');
+    if (!pagination) {
+        pagination = document.createElement('ul');
+        pagination.className = 'pagination';
+        element.appendChild(pagination);
     }
+    pagination.innerHTML = '';
+
+    // Previous Page
+    var prevLi = document.createElement('li');
+    prevLi.textContent = '«';
+    prevLi.addEventListener('click', function () {
+        if (currentPage > 1) {
+            currentPage--;
+            this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
+        }
+    }.bind(this)); // Bind context here
+    if (currentPage === 1) {
+        prevLi.classList.add('disabled');
+    }
+    pagination.appendChild(prevLi);
+
+    // Current Page
+    var currentPageLi = document.createElement('li');
+    currentPageLi.textContent = currentPage;
+    currentPageLi.classList.add('active');
+    pagination.appendChild(currentPageLi);
+
+    // Next Page
+    var nextLi = document.createElement('li');
+    nextLi.textContent = '»';
+    nextLi.addEventListener('click', function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
+        }
+    }.bind(this)); // Bind context here
+    if (currentPage === totalPages) {
+        nextLi.classList.add('disabled');
+    }
+    pagination.appendChild(nextLi);
+
+    // Add DataTables style class to pagination
+    pagination.classList.add('pagination');
+}
 });
