@@ -1,26 +1,10 @@
 looker.plugins.visualizations.add({
   create: function (element, config) {
-      console.log("Create function started..");
-    var container = document.createElement('div');
-    container.style.position = 'relative';
-    container.style.width = '100%';
-    container.style.height = '100%';
-    element.appendChild(container);
-
+    console.log("Create function started..");
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
     chart.className = 'table table-bordered table-striped'; // Add DataTables classes
-    chart.style.fontFamily = 'Arial'; // Set font family to Arial
-    chart.style.fontSize = '12px'; // Set font size to 12px
-    container.appendChild(chart);
-
-    var pagination = document.createElement('div');
-    pagination.className = 'pagination-container';
-    pagination.style.position = 'absolute';
-    pagination.style.bottom = '0';
-    pagination.style.right = '0';
-    container.appendChild(pagination);
-
+    element.appendChild(chart);
     var style = document.createElement('style');
     style.innerHTML = `
       table {
@@ -31,31 +15,30 @@ looker.plugins.visualizations.add({
         border-collapse: collapse;
         padding: 5px;
       }
-      .pagination-container {
+      .pagination {
         display: flex;
         list-style-type: none;
         padding: 0;
         margin: 10px 0;
       }
-      .pagination-container li {
+      .pagination li {
         margin-right: 5px;
         cursor: pointer;
         padding: 5px 10px;
         border: 1px solid #ccc;
         background-color: #f9f9f9;
       }
-      .pagination-container li.active {
+      .pagination li.active {
         font-weight: bold;
         background-color: #007bff;
         color: white;
       }
-      .pagination-container li.disabled {
+      .pagination li.disabled {
         pointer-events: none;
         color: #ccc;
       }`;
     element.appendChild(style);
     console.log("chart element added..");
-
   },
   updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
     console.log("update function started..");
