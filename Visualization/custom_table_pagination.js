@@ -4,6 +4,8 @@ looker.plugins.visualizations.add({
     var chart = document.createElement('table');
     chart.id = 'custom-table-chart';
     chart.className = 'table table-bordered table-striped'; // Add DataTables classes
+    chart.style.fontFamily = 'Arial'; // Set font family to Arial
+    chart.style.fontSize = '12px'; // Set font size to 12px
     element.appendChild(chart);
     var style = document.createElement('style');
     style.innerHTML = `
@@ -39,6 +41,7 @@ looker.plugins.visualizations.add({
       }`;
     element.appendChild(style);
     console.log("chart element added..");
+
   },
   updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
     console.log("update function started..");
@@ -64,11 +67,20 @@ looker.plugins.visualizations.add({
     indexHeader.textContent = '';
     headerRow.appendChild(indexHeader);
 
-    for (var field of queryResponse.fields) {
+    // Loop through dimensions and add column headers
+    for (var dim of queryResponse.fields.dimensions) {
       var th = document.createElement('th');
-      th.textContent = field.label_short || field.label || field.name;
+      th.textContent = dim.label_short || dim.label || dim.name;
       headerRow.appendChild(th);
     }
+
+    // Loop through measures and add column headers
+    for (var meas of queryResponse.fields.measures) {
+      var th = document.createElement('th');
+      th.textContent = meas.label_short || meas.label || meas.name;
+      headerRow.appendChild(th);
+    }
+
     chart.appendChild(headerRow);
 
     // Create table rows for the current page
@@ -82,9 +94,18 @@ looker.plugins.visualizations.add({
       indexCell.textContent = i + 1;
       rows.appendChild(indexCell);
 
-      for (var field of queryResponse.fields) {
+      // Loop through dimensions and add data cells
+      for (var dim of queryResponse.fields.dimensions) {
         var td = document.createElement('td');
-        var cellValue = row[field.name].value;
+        var cellValue = row[dim.name].value;
+        td.textContent = cellValue;
+        rows.appendChild(td);
+      }
+
+      // Loop through measures and add data cells
+      for (var meas of queryResponse.fields.measures) {
+        var td = document.createElement('td');
+        var cellValue = row[meas.name].value;
         td.textContent = cellValue;
         rows.appendChild(td);
       }
@@ -157,11 +178,20 @@ looker.plugins.visualizations.add({
     indexHeader.textContent = '';
     headerRow.appendChild(indexHeader);
 
-    for (var field of queryResponse.fields) {
+    // Loop through dimensions and add column headers
+    for (var dim of queryResponse.fields.dimensions) {
       var th = document.createElement('th');
-      th.textContent = field.label_short || field.label || field.name;
+      th.textContent = dim.label_short || dim.label || dim.name;
       headerRow.appendChild(th);
     }
+
+    // Loop through measures and add column headers
+    for (var meas of queryResponse.fields.measures) {
+      var th = document.createElement('th');
+      th.textContent = meas.label_short || meas.label || meas.name;
+      headerRow.appendChild(th);
+    }
+
     chart.appendChild(headerRow);
 
     // Create table rows for the current page
@@ -175,9 +205,18 @@ looker.plugins.visualizations.add({
       indexCell.textContent = i + 1;
       rows.appendChild(indexCell);
 
-      for (var field of queryResponse.fields) {
+      // Loop through dimensions and add data cells
+      for (var dim of queryResponse.fields.dimensions) {
         var td = document.createElement('td');
-        var cellValue = row[field.name].value;
+        var cellValue = row[dim.name].value;
+        td.textContent = cellValue;
+        rows.appendChild(td);
+      }
+
+      // Loop through measures and add data cells
+      for (var meas of queryResponse.fields.measures) {
+        var td = document.createElement('td');
+        var cellValue = row[meas.name].value;
         td.textContent = cellValue;
         rows.appendChild(td);
       }
