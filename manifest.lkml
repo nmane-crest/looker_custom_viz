@@ -36,3 +36,9 @@ visualization: {
   file: "Visualization/line_bar_both_y.js"
   dependencies: ["https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"]
 }
+visualization: {
+  id: "Table Pagination"
+  label: "Table Pagination"
+  file: "Visualization/custom_table_pagination.js"
+  dependencies: ["https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"]
+}
