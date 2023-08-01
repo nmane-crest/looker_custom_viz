@@ -1,83 +1,191 @@
-// custom_pagination_table.js
-
 looker.plugins.visualizations.add({
-    options: {
-        itemsPerPage: {
-            type: "number",
-            label: "Items Per Page",
-            default: 10,
-        },
-    },
     create: function (element, config) {
-        this.container = element.appendChild(document.createElement("div"));
-        this.container.className = "paginated-table-container";
+        console.log("Create function started..");
+        var chart = document.createElement('table');
+        chart.id = 'custom-table-chart';
+        chart.className = 'table table-bordered table-striped'; // Add DataTables classes
+        element.appendChild(chart);
+        var style = document.createElement('style');
+        style.innerHTML = `table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        .pagination {
+          display: flex;
+          list-style-type: none;
+          padding: 0;
+          margin: 10px 0;
+        }
+        .pagination li {
+          margin-right: 5px;
+          cursor: pointer;
+          padding: 5px 10px;
+          border: 1px solid #ccc;
+          background-color: #f9f9f9;
+        }
+        .pagination li.active {
+          font-weight: bold;
+          background-color: #007bff;
+          color: white;
+        }
+        .pagination li.disabled {
+          pointer-events: none;
+          color: #ccc;
+        }`;
+        element.appendChild(style);
+        console.log("chart element added..");
     },
-    updateAsync: function (data, element, config, queryResponse, details, done) {
-        // Determine the structure of the data (array of objects or array of arrays)
-        console.log(data)
-        const isArrayData = Array.isArray(data);
-        console.log(isArrayData)
-        const rowData = isArrayData ? data : queryResponse.fields.map(field => data[field.name].value);
+    updateAsync: function (data, element, config, queryResponse, details, doneRendering) {
+        console.log("update function started..");
+        var chart = element.querySelector('#custom-table-chart');
+        console.log("chart Object:", chart)
+        chart.innerHTML = '';
 
-        // Extract the data you need from queryResponse and data objects
-        const rows = queryResponse.fields.dimension_like.map(field => field.name);
-        const tableData = isArrayData ? data.map(row => queryResponse.fields.map(field => row[field.name].value)) : [rowData];
+        // Add pagination variables
+        var currentPage = 1;
+        var rowsPerPage = 1; // Change this to set the number of rows per page
 
-        // Get the current page number from the options or default to 1
-        const currentPage = parseInt(config.query_fields.page_number || 1, 10);
-        const itemsPerPage = config.query_fields.itemsPerPage || config.options.itemsPerPage.default;
-        const startIdx = (currentPage - 1) * itemsPerPage;
-        const endIdx = startIdx + itemsPerPage;
-        const visibleRows = tableData.slice(startIdx, endIdx);
+        // Calculate number of pages
+        var totalPages = Math.ceil(data.length / rowsPerPage);
 
-        // Render the paginated table
-        this.container.innerHTML = this.renderTable(rows, visibleRows);
+        // Calculate start and end indices for the current page
+        var startIndex = (currentPage - 1) * rowsPerPage;
+        var endIndex = startIndex + rowsPerPage;
 
-        // Add pagination controls
-        this.addPaginationControls(currentPage, itemsPerPage, tableData.length);
+        var headerRow = document.createElement('tr');
+        for (var i of queryResponse.fields.dimensions) {
+            var th = document.createElement('th');
+            th.textContent = i.name;
+            headerRow.appendChild(th);
+        }
+        chart.appendChild(headerRow);
 
-        done();
-}
+        // Create table rows for the current page
+        for (var i = startIndex; i < endIndex; i++) {
+            if (i >= data.length) break; // Break the loop if end index exceeds data length
+            var row = data[i];
+            var rows = document.createElement('tr');
+            Object.keys(row).forEach(function (key) {
+                var td = document.createElement('td');
+                td.textContent = row[key].value;
+                rows.appendChild(td);
+            });
+            chart.appendChild(rows);
+        }
 
-    renderTable: function (headers, rows) {
-        let html = '<table><thead><tr>';
-        headers.forEach((header) => (html += `<th>${header}</th>`));
-        html += '</tr></thead><tbody>';
-        rows.forEach((row) => {
-            html += '<tr>';
-            row.forEach((cell) => (html += `<td>${cell}</td>`));
-            html += '</tr>';
-        });
-        html += '</tbody></table>';
-        return html;
+        // Create pagination controls
+        var pagination = document.createElement('ul');
+        pagination.className = 'pagination';
+
+        // Previous Page
+        var prevLi = document.createElement('li');
+        prevLi.textContent = '«';
+        prevLi.addEventListener('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
+            }
+        }.bind(this)); // Bind context here
+        if (currentPage === 1) {
+            prevLi.classList.add('disabled');
+        }
+        pagination.appendChild(prevLi);
+
+        // Current Page
+        var currentPageLi = document.createElement('li');
+        currentPageLi.textContent = currentPage;
+        currentPageLi.classList.add('active');
+        pagination.appendChild(currentPageLi);
+
+        // Next Page
+        var nextLi = document.createElement('li');
+        nextLi.textContent = '»';
+        nextLi.addEventListener('click', function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
+            }
+        }.bind(this)); // Bind context here
+        if (currentPage === totalPages) {
+            nextLi.classList.add('disabled');
+        }
+        pagination.appendChild(nextLi);
+
+        // Add DataTables style class to pagination
+        pagination.classList.add('pagination');
+
+        chart.appendChild(pagination);
+
+        doneRendering()
     },
-    addPaginationControls: function (currentPage, itemsPerPage, totalRows) {
-        const totalPages = Math.ceil(totalRows / itemsPerPage);
+    updateTable: function (data, element, queryResponse, currentPage, rowsPerPage) {
+        var chart = element.querySelector('#custom-table-chart');
+        chart.innerHTML = '';
 
-        const paginationContainer = document.createElement("div");
-        paginationContainer.className = "pagination-controls";
+        // Calculate number of pages
+        var totalPages = Math.ceil(data.length / rowsPerPage);
 
-        const prevButton = document.createElement("button");
-        prevButton.textContent = "Previous";
-        prevButton.disabled = currentPage === 1;
-        prevButton.onclick = () => this.setPage(currentPage - 1);
+        // Calculate start and end indices for the current page
+        var startIndex = (currentPage - 1) * rowsPerPage;
+        var endIndex = startIndex + rowsPerPage;
 
-        const nextButton = document.createElement("button");
-        nextButton.textContent = "Next";
-        nextButton.disabled = currentPage === totalPages;
-        nextButton.onclick = () => this.setPage(currentPage + 1);
+        var headerRow = document.createElement('tr');
+        for (var i of queryResponse.fields.dimensions) {
+            var th = document.createElement('th');
+            th.textContent = i.name;
+            headerRow.appendChild(th);
+        }
+        chart.appendChild(headerRow);
 
-        const pageNumberSpan = document.createElement("span");
-        pageNumberSpan.textContent = `Page ${currentPage} of ${totalPages}`;
+        // Create table rows for the current page
+        for (var i = startIndex; i < endIndex; i++) {
+            if (i >= data.length) break; // Break the loop if end index exceeds data length
+            var row = data[i];
+            var rows = document.createElement('tr');
+            Object.keys(row).forEach(function (key) {
+                var td = document.createElement('td');
+                td.textContent = row[key].value;
+                rows.appendChild(td);
+            });
+            chart.appendChild(rows);
+        }
 
-        paginationContainer.appendChild(prevButton);
-        paginationContainer.appendChild(pageNumberSpan);
-        paginationContainer.appendChild(nextButton);
+        // Update pagination controls
+        var pagination = element.querySelector('.pagination');
+        pagination.innerHTML = '';
 
-        this.container.appendChild(paginationContainer);
-    },
-    setPage: function (page) {
-        const options = { ...this.options, query_fields: { page_number: page } };
-        this.trigger("apply", options);
-    },
+        // Previous Page
+        var prevLi = document.createElement('li');
+        prevLi.textContent = '«';
+        prevLi.addEventListener('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
+            }
+        }.bind(this)); // Bind context here
+        if (currentPage === 1) {
+            prevLi.classList.add('disabled');
+        }
+        pagination.appendChild(prevLi);
+
+        // Current Page
+        var currentPageLi = document.createElement('li');
+        currentPageLi.textContent = currentPage;
+        currentPageLi.classList.add('active');
+        pagination.appendChild(currentPageLi);
+
+        // Next Page
+        var nextLi = document.createElement('li');
+        nextLi.textContent = '»';
+        nextLi.addEventListener('click', function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                this.updateTable(data, element, queryResponse, currentPage, rowsPerPage);
+            }
+        }.bind(this)); // Bind context here
+        if (currentPage === totalPages) {
+            nextLi.classList.add('disabled');
+        }
+        pagination.appendChild(nextLi);
+    }
 });
