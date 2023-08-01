@@ -13,9 +13,15 @@ looker.plugins.visualizations.add({
         this.container.className = "paginated-table-container";
     },
     updateAsync: function (data, element, config, queryResponse, details, done) {
+        // Determine the structure of the data (array of objects or array of arrays)
+        console.log(data)
+        const isArrayData = Array.isArray(data);
+        console.log(isArrayData)
+        const rowData = isArrayData ? data : queryResponse.fields.map(field => data[field.name].value);
+
         // Extract the data you need from queryResponse and data objects
-        const rows = queryResponse.fields.dimension_like.map((field) => field.name);
-        const tableData = data.map((row) => row.map((value) => value.rendered || value.value));
+        const rows = queryResponse.fields.dimension_like.map(field => field.name);
+        const tableData = isArrayData ? data.map(row => queryResponse.fields.map(field => row[field.name].value)) : [rowData];
 
         // Get the current page number from the options or default to 1
         const currentPage = parseInt(config.query_fields.page_number || 1, 10);
@@ -28,10 +34,11 @@ looker.plugins.visualizations.add({
         this.container.innerHTML = this.renderTable(rows, visibleRows);
 
         // Add pagination controls
-        this.addPaginationControls(currentPage, itemsPerPage, data.length);
+        this.addPaginationControls(currentPage, itemsPerPage, tableData.length);
 
         done();
-    },
+}
+
     renderTable: function (headers, rows) {
         let html = '<table><thead><tr>';
         headers.forEach((header) => (html += `<th>${header}</th>`));
