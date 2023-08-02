@@ -64,3 +64,22 @@ view: pci {
     sql: ${TABLE}.timestamp ;;
   }
 }
+view: users {
+  dimension: id {
+    type: number
+    primary_key: yes
+  }
+  dimension: name {
+    type: string
+  }
+  dimension: city {
+    type: string
+  }
+
+  # Define the custom filter
+  filter: custom_filter {
+    type: string
+    description: "Custom filter based on the City field."
+    default_value: "New York" # Optional: Set a default value for the filter
+  }
+}
