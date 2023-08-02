@@ -48,7 +48,7 @@ looker.plugins.visualizations.add({
 
     // Add pagination variables
     var currentPage = 1;
-    var rowsPerPage = 5000; // Change this to set the number of rows per page
+    var rowsPerPage = 6000; // Change this to set the number of rows per page
 
     // Calculate number of pages
     var totalPages = Math.ceil(data.length / rowsPerPage);
