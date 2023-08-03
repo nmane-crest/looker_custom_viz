@@ -47,7 +47,7 @@ view: events {
 
     filter: example_date {
       type: date
-      dimension: allowed_date_range  # Use the dynamic time dimension
+      # dimension: allowed_date_range  # Use the dynamic time dimension
     }
 
     dimension: date_range_valid {
@@ -57,7 +57,7 @@ view: events {
                 THEN 'Invalid Date Range: Please select a date range within 3 months.'
               ELSE NULL
             END ;;
-      hidden: yes
+      hidden: no
     }
 
     dimension: date_range_error {
