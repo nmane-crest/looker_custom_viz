@@ -8,7 +8,7 @@
   elements:
   - title: Log Hunting 1
     name: Log Hunting 1
-    model: corelight-chronicle-1
+    model: custom_visualization
     explore: events
     type: looker_pie
     fields: [events.metadata__product_event_type, events.count]
