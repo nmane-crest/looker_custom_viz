@@ -226,8 +226,8 @@
     title: Event Timestamp Time
     type: field_filter
     default_value: after 2023/07/18 12:30
-    allow_multiple_values: true
-    required: false
+    allow_multiple_values: false
+    required: true
     ui_config:
       type: advanced
       display: popover
