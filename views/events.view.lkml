@@ -38,40 +38,35 @@ view: events {
 
   # }
 
-  parameter: allowed_start_date {
-    type: date
-    default_value: "2023-01-01"
-  }
-
-  parameter: allowed_end_date {
-    type: date
-    default_value: "2023-12-31"
-  }
-
-  filter: example_date {
-    type: date
-    # field: your_table.date_field
-    default_value: {
-      start: "${allowed_start_date}"
-      end: "${allowed_end_date}"
+    dimension_group: allowed_date_range {
+      type: time
+      timeframes: [raw, date, month, quarter, year]
+      sql: ${TABLE}.metadata.event_timestamp.seconds ;;
+      # default_value: "2023-01-01"  # Set the default value for the date range
     }
-  }
-  dimension: date_range_valid {
-    type: string
-    sql: CASE
-          WHEN TIMESTAMPDIFF(SQL_TSI_MONTH, ${example_date.start}, ${example_date.end}) > 3 THEN 'Invalid Date Range: Please select a date range within 3 months.'
-          ELSE NULL
-        END ;;
-    hidden: true
-  }
-  dimension: date_range_error {
-    type: string
-    sql: CASE WHEN ${date_range_valid} IS NOT NULL THEN '<div class="error">' || ${date_range_valid} || '</div>' ELSE NULL END ;;
-    html: {% if date_range_valid %} { { date_range_valid } } {% endif %}
-    html: <style>.error { color: red; font-weight: bold; }</style>
-    hidden: true
-  }
 
+    filter: example_date {
+      type: date
+      dimension: allowed_date_range  # Use the dynamic time dimension
+    }
+
+    dimension: date_range_valid {
+      type: string
+      sql: CASE
+              WHEN TIMESTAMPDIFF(SQL_TSI_MONTH, ${allowed_date_range.start}, ${allowed_date_range.end}) > 3
+                THEN 'Invalid Date Range: Please select a date range within 3 months.'
+              ELSE NULL
+            END ;;
+      hidden: yes
+    }
+
+    dimension: date_range_error {
+      type: string
+      sql: CASE WHEN ${date_range_valid} IS NOT NULL THEN '<div class="error">' || ${date_range_valid} || '</div>' ELSE NULL END ;;
+      html: {% if date_range_valid %} { { date_range_valid } } {% endif %}
+      html: <style>.error { color: red; font-weight: bold; }</style>
+      hidden: true
+    }
 
   dimension: about {
     hidden: yes
