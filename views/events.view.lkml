@@ -11,68 +11,70 @@ view: events {
   # OFFSET {{ number_per_page._parameter_value | times: page._parameter_value | minus: number_per_page._parameter_value }} ;;
   # }
 
-  # filter: cust_date {
-  #   type: date
-  #   sql: ${TABLE}.date ;;
-  #   start: "2023-01-01"  # The start date of the range
-  #   end: "2023-12-31"
-  #   # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
+  filter: cust_date {
+    type: date
+    # sql: ${TABLE}.date ;;
+    # start: "2023-01-01"  # The start date of the range
+    # end: "2023-12-31"
+    # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
 
-  # }
+  }
 
-  # filter: cust_date1 {
-  #   type: date_time
-  #   # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
+  filter: cust_date1 {
+    type: date_time
+    # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
 
-  # }
+  }
 
-  # filter: offset {
-  #   type: number
-  #   # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
+  filter: offset {
+    type: number
+    # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
 
-  # }
+  }
 
-  # filter: offset1 {
-  #   type: string
-  #   # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
+  filter: offset1 {
+    type: string
+    # sql: EXISTS (SELECT * FROM events WHERE metadata.vendor_name = 'Corelight' ORDER BY metadata.event_timestamp.seconds LIMIT 10000000 OFFSET ) ;;
 
-  # }
+  }
 
-    dimension_group: allowed_date_range {
-      type: time
-      timeframes: [raw, date, month, quarter, year]
-      sql: ${TABLE}.metadata.event_timestamp.seconds ;;
-      # default_value: "2023-01-01"  # Set the default value for the date range
-    }
-    # {{ _filters['events.offset']}}
-    filter: example_date {
-      type: date
-      sql:  ;;
-      # sql: CASE
-      # WHEN TIMESTAMPDIFF(SQL_TSI_MONTH, ${allowed_date_range.start}, ${allowed_date_range.end}) > 3
-      # THEN 'Invalid Date Range: Please select a date range within 3 months.'
-      # ELSE NULL
-      # END ;;
-      # dimension: allowed_date_range  # Use the dynamic time dimension
-    }
+    # dimension_group: allowed_date_range {
+    #   type: time
+    #   timeframes: [raw, date, month, quarter, year]
+    #   sql: ${TABLE}.metadata.event_timestamp.seconds ;;
+    #   # default_value: "2023-01-01"  # Set the default value for the date range
+    # }
+    # # {{ _filters['events.offset']}}
+    # filter: example_date {
+    #   type: interval
+    #   label: "{{_filters['events.example_date']}}"
+    #   suggest_dimension: date_range_valid
 
-    dimension: date_range_valid {
-      type: string
-      sql: CASE
-              WHEN TIMESTAMPDIFF(SQL_TSI_MONTH, ${allowed_date_range.start}, ${allowed_date_range.end}) > 3
-                THEN 'Invalid Date Range: Please select a date range within 3 months.'
-              ELSE NULL
-            END ;;
-      hidden: no
-    }
+    #   # sql: CASE
+    #   # WHEN TIMESTAMPDIFF(SQL_TSI_MONTH, ${allowed_date_range.start}, ${allowed_date_range.end}) > 3
+    #   # THEN 'Invalid Date Range: Please select a date range within 3 months.'
+    #   # ELSE NULL
+    #   # END ;;
+    #   # dimension: allowed_date_range  # Use the dynamic time dimension
+    # }
 
-    dimension: date_range_error {
-      type: string
-      sql: CASE WHEN ${date_range_valid} IS NOT NULL THEN '<div class="error">' || ${date_range_valid} || '</div>' ELSE NULL END ;;
-      html: {% if date_range_valid %} { { date_range_valid } } {% endif %}
-      html: <style>.error { color: red; font-weight: bold; }</style>
-      hidden: true
-    }
+    # dimension: date_range_valid {
+    #   type: string
+    #   sql: CASE
+    #           WHEN TIMESTAMPDIFF(SQL_TSI_MONTH, ${allowed_date_range.start}, ${allowed_date_range.end}) > 3
+    #             THEN 'Invalid Date Range: Please select a date range within 3 months.'
+    #           ELSE NULL
+    #         END ;;
+    #   hidden: no
+    # }
+
+    # dimension: date_range_error {
+    #   type: string
+    #   sql: CASE WHEN ${date_range_valid} IS NOT NULL THEN '<div class="error">' || ${date_range_valid} || '</div>' ELSE NULL END ;;
+    #   html: {% if date_range_valid %} { { date_range_valid } } {% endif %}
+    #   html: <style>.error { color: red; font-weight: bold; }</style>
+    #   hidden: true
+    # }
 
   dimension: about {
     hidden: yes
