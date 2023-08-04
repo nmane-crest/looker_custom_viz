@@ -12,7 +12,8 @@ view: events {
   # }
   dimension: Service {
     # hidden: yes
-    sql: '{{${TABLE}.network.ip_protocol}}/{{${TABLE}.target.port}}' ;;
+    type: string
+    sql:  CONCAT(${TABLE}.network.ip_protocol, '/', ${TABLE}.target.port) ;;
   }
 
   dimension: about {
