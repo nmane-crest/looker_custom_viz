@@ -10,11 +10,70 @@ view: events {
   #       OFFSET {{ _filters['events.offset']}};;
   # OFFSET {{ number_per_page._parameter_value | times: page._parameter_value | minus: number_per_page._parameter_value }} ;;
   # }
+  dimension: Source {
+    group_label: "IP Interrogation"
+    type: string
+    sql: ${TABLE}.principal.ip ;;
+  }
+  dimension: Destination {
+    group_label: "IP Interrogation"
+    type: string
+    sql: events__target__ip ;;
+  }
   dimension: Service {
-    # hidden: yes
+    group_label: "IP Interrogation"
     type: string
     sql:  CONCAT(${TABLE}.network.ip_protocol, '/', ${TABLE}.target.port) ;;
   }
+  # dimension: is_dest_internal_ip {
+  #   type: string
+  #   # sql: ${TABLE}.target.ip ;;
+  #   group_label: "IP Interrogation"
+  #   # html: <p>{{${TABLE}.target.ip}} </p>;;
+  #   sql: CASE
+  #         WHEN
+  #           NET.IPV4_TO_INT64(${Destination}) BETWEEN NET.IPV4_TO_INT64('10.0.0.0') AND NET.IPV4_TO_INT64('10.255.255.255')
+  #           OR
+  #           NET.IPV4_TO_INT64(${Destination}) BETWEEN NET.IPV4_TO_INT64('172.16.0.0') AND NET.IPV4_TO_INT64('172.31.255.255')
+  #           OR
+  #           NET.IPV4_TO_INT64(${Destination}) BETWEEN NET.IPV4_TO_INT64('192.168.0.0') AND NET.IPV4_TO_INT64('192.168.255.255')
+  #         THEN 'true'
+  #         ELSE 'false'
+  #       END ;;
+  # }
+
+  dimension: is_broadcast {
+    group_label: "IP Interrogation"
+    type: string
+    sql: CASE
+          WHEN ${TABLE}.principal.ip IN ('0.0.0.0', '255.255.255.255')
+            OR ${TABLE}.target.ip IN ('255.255.255.255', '0.0.0.0') THEN 'true'
+          ELSE 'false'
+        END ;;
+  }
+
+  dimension: bytes_in {
+    group_label: "IP Interrogation"
+    type: number
+    sql: ${TABLE}.target.labels;;
+  }
+  dimension: bytes_out {
+    group_label: "IP Interrogation"
+    type: number
+    sql: ${TABLE}.principal.labels ;;
+  }
+  dimension: Bytes {
+    group_label: "IP Interrogation"
+    type: number
+    sql: (${bytes_in} + ${bytes_out}) ;;
+  }
+  # dimension: bytes_in {
+  #   group_label: "IP Interrogation"
+  #   type: string
+  #   sql: ${TABLE}.target.labels;;
+  # }
+
+
 
   dimension: about {
     hidden: yes
@@ -14051,7 +14110,7 @@ view: events {
   }
 
   dimension: principal__ip {
-    hidden: no
+    # hidden: yes
     sql: ${TABLE}.principal.ip ;;
     group_label: "Principal"
     group_item_label: "IP"
@@ -40029,6 +40088,29 @@ view: events__target__ip {
     type: string
     sql: events__target__ip ;;
   }
+  dimension: is_dest_internal_ip {
+    type: string
+    # sql: ${TABLE}.target.ip ;;
+    # group_label: "IP Interrogation"
+    # html: <p>{{${TABLE}.target.ip}} </p>;;
+    sql: CASE
+          WHEN
+            NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('10.0.0.0') AND NET.IPV4_TO_INT64('10.255.255.255')
+            OR
+            NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('172.16.0.0') AND NET.IPV4_TO_INT64('172.31.255.255')
+            OR
+            NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('192.168.0.0') AND NET.IPV4_TO_INT64('192.168.255.255')
+          THEN 'true'
+          ELSE 'false'
+        END ;;
+  }
+  dimension: External_Internal {
+    # group_label: "IP Interrogation"
+    type: string
+    sql:  CASE
+          WHEN ${is_dest_internal_ip} = 'true' THEN 'Internal'
+          ELSE 'External'
+        END ;;
 }
 
 view: events__src__nat_ip {
@@ -82446,7 +82528,7 @@ view: events__extensions__vulns__vulnerabilities {
   }
 
   dimension: about__labels {
-    hidden: yes
+    # hidden: yes
     sql: ${TABLE}.about.labels ;;
     group_label: "About"
     group_item_label: "Labels"
