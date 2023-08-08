@@ -1,6 +1,73 @@
   view: events {
     sql_table_name: `datalake.events` ;;
 
+    dimension: Service {
+      # group_label: "IP Interrogation"
+      type: string
+      sql:  CONCAT(${TABLE}.network.ip_protocol, '/', ${TABLE}.target.port) ;;
+    }
+    dimension: UID {
+      type: string
+      sql: ${TABLE}.about.labels ;;
+    }
+    dimension: events__target__ip {
+      type: string
+      sql: events__target__ip ;;
+    }
+
+    dimension: is_dest_internal_ip {
+
+      type: string
+      sql: CASE
+            WHEN CHAR_LENGTH(${events__target__ip.events__target__ip}) <= 15 AND CHAR_LENGTH(${events__target__ip.events__target__ip}) != 0 THEN
+              CASE
+                WHEN
+                  (INET_ATON(${events__target__ip.events__target__ip}) BETWEEN INET_ATON('10.0.0.0') AND INET_ATON('10.255.255.255'))
+                  OR
+                  (INET_ATON(${events__target__ip.events__target__ip}) BETWEEN INET_ATON('172.16.0.0') AND INET_ATON('172.31.255.255'))
+                  OR
+                  (INET_ATON(${events__target__ip.events__target__ip}) BETWEEN INET_ATON('192.168.0.0') AND INET_ATON('192.168.255.255'))
+                THEN 'Internal'
+                ELSE 'External'
+              END
+            WHEN CHAR_LENGTH(${events__target__ip.events__target__ip}) > 15 AND CHAR_LENGTH(${events__target__ip.events__target__ip}) != 0 THEN
+              CASE
+                WHEN
+                  (NET.IPV6_TO_INT64(NET.IPV6_FROM_STRING(${events__target__ip.events__target__ip})) BETWEEN NET.IPV6_TO_INT64(NET.IPV6_FROM_STRING('2001:db8::')) AND NET.IPV6_TO_INT64(NET.IPV6_FROM_STRING('2001:db8:ffff:ffff:ffff:ffff:ffff:ffff')))
+                THEN 'Internal'
+                ELSE 'External'
+              END
+            ELSE 'External'
+          END ;;
+    }
+
+
+
+    dimension: is_broadcast {
+      # group_label: "IP Interrogation"
+      type: string
+      sql: CASE
+          WHEN ${TABLE}.principal.ip IN ('0.0.0.0', '255.255.255.255')
+            OR ${TABLE}.target.ip IN ('255.255.255.255', '0.0.0.0') THEN 'true'
+          ELSE 'false'
+        END ;;
+    }
+
+    dimension: bytes_in {
+      # group_label: "IP Interrogation"
+      # type: number
+      sql: ${TABLE}.target.labels;;
+    }
+    dimension: bytes_out {
+      # group_label: "IP Interrogation"
+      # type: number
+      sql: ${TABLE}.principal.labels ;;
+    }
+    dimension: Bytes {
+      # group_label: "IP Interrogation"
+      sql: (${bytes_in} + ${bytes_out}) ;;
+    }
+
     dimension: about {
       hidden: yes
       sql: ${TABLE}.about ;;
@@ -97900,23 +97967,23 @@
     }
   }
 
-  view: ip_interrogation {
-    dimension: events__target__ip {
-      type: string
-      sql: events__target__ip ;;
-    }
-    dimension: is_dest_internal_ip {
-      type: string
-      # group_label: "IP Interrogation"
-      sql: CASE
-            WHEN
-              NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('10.0.0.0') AND NET.IPV4_TO_INT64('10.255.255.255')
-              OR
-              NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('172.16.0.0') AND NET.IPV4_TO_INT64('172.31.255.255')
-              OR
-              NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('192.168.0.0') AND NET.IPV4_TO_INT64('192.168.255.255')
-            THEN 'true'
-            ELSE 'false'
-          END ;;
-    }
-  }
+  # view: ip_interrogation {
+  #   dimension: events__target__ip {
+  #     type: string
+  #     sql: events__target__ip ;;
+  #   }
+  #   dimension: is_dest_internal_ip {
+  #     type: string
+  #     # group_label: "IP Interrogation"
+  #     sql: CASE
+  #           WHEN
+  #             NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('10.0.0.0') AND NET.IPV4_TO_INT64('10.255.255.255')
+  #             OR
+  #             NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('172.16.0.0') AND NET.IPV4_TO_INT64('172.31.255.255')
+  #             OR
+  #             NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('192.168.0.0') AND NET.IPV4_TO_INT64('192.168.255.255')
+  #           THEN 'true'
+  #           ELSE 'false'
+  #         END ;;
+  #   }
+  # }
