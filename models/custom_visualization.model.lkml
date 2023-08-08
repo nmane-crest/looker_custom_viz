@@ -3,6 +3,7 @@ connection: "chronicle"
 # include all the views
 include: "/views/**/*.view.lkml"
 include: "/log_hunting.dashboard.lookml"
+include: "/ip_interrogation.dashboard.lookml"
 
 datagroup: custom_visualization_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;

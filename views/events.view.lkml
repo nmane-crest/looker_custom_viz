@@ -97899,3 +97899,24 @@
       sql: ${TABLE}.value ;;
     }
   }
+
+  view: ip_interrogation {
+    dimension: events__target__ip {
+      type: string
+      sql: events__target__ip ;;
+    }
+    dimension: is_dest_internal_ip {
+      type: string
+      # group_label: "IP Interrogation"
+      sql: CASE
+            WHEN
+              NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('10.0.0.0') AND NET.IPV4_TO_INT64('10.255.255.255')
+              OR
+              NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('172.16.0.0') AND NET.IPV4_TO_INT64('172.31.255.255')
+              OR
+              NET.IPV4_TO_INT64(${events__target__ip}) BETWEEN NET.IPV4_TO_INT64('192.168.0.0') AND NET.IPV4_TO_INT64('192.168.255.255')
+            THEN 'true'
+            ELSE 'false'
+          END ;;
+    }
+  }
