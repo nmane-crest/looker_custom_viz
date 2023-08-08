@@ -1,11 +1,309 @@
 - dashboard: ip_interrogation
-  title: IP Interrogation
+  title: ip_interrogation
   layout: newspaper
   preferred_viewer: dashboards-next
-  tile_size: 100
-
-  filters:
-
+  description: ''
+  preferred_slug: nsl96sc1WE1WFHvAxn9nff
   elements:
-    - name: hello_world
-      type: looker_column
+  - title: Top Non-Web Protocol Usage
+    name: Top Non-Web Protocol Usage
+    model: custom_visualization
+    explore: events
+    type: looker_bar
+    fields: [events.count, events.Service]
+    sorts: [events.count desc 0]
+    limit: 10
+    column_limit: 50
+    filter_expression: "${events.target__port}!=80 AND ${events.target__port}!=8080\
+      \ AND ${events.target__port}!=443"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    x_axis_zoom: true
+    y_axis_zoom: true
+    series_labels:
+      events.count: Count
+    defaults_version: 1
+    listen: {}
+    row: 0
+    col: 0
+    width: 8
+    height: 6
+  - title: Top Connections/Services by Bytes Transferred
+    name: Top Connections/Services by Bytes Transferred
+    model: custom_visualization
+    explore: events
+    type: looker_grid
+    fields: [events.Service, events__principal__ip.events__principal__ip, events__target__ip.events__target__ip]
+    sorts: [events.Service]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    defaults_version: 1
+    listen: {}
+    row: 0
+    col: 8
+    width: 8
+    height: 6
+  - title: Corelight Data Sets
+    name: Corelight Data Sets
+    model: custom_visualization
+    explore: events
+    type: looker_pie
+    fields: [events.metadata__product_event_type, events.count]
+    sorts: [events.metadata__product_event_type]
+    limit: 50
+    column_limit: 50
+    value_labels: legend
+    label_type: labPer
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    defaults_version: 1
+    row: 0
+    col: 16
+    width: 8
+    height: 6
+  - title: Rare User Agents
+    name: Rare User Agents
+    model: custom_visualization
+    explore: events
+    type: looker_pie
+    fields: [events.network__http__user_agent, events.count]
+    sorts: [events.network__http__user_agent]
+    limit: 50
+    column_limit: 50
+    value_labels: labels
+    label_type: lab
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    defaults_version: 1
+    hidden_pivots: {}
+    listen: {}
+    row: 6
+    col: 0
+    width: 8
+    height: 6
+  - title: Web Ports Breakdown
+    name: Web Ports Breakdown
+    model: custom_visualization
+    explore: events
+    type: looker_pie
+    fields: [events.target__port, events.count]
+    filters:
+      events.target__port: '80,8080,443'
+    sorts: [events.count desc 0]
+    limit: 500
+    column_limit: 50
+    value_labels: labels
+    label_type: lab
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    defaults_version: 1
+    listen: {}
+    row: 6
+    col: 8
+    width: 8
+    height: 6
+  - title: Top Destination IP, Method, & URI
+    name: Top Destination IP, Method, & URI
+    model: custom_visualization
+    explore: events
+    type: looker_grid
+    fields: [events__principal__ip.events__principal__ip, events__target__ip.events__target__ip,
+      events.network__http__method, events.target__url]
+    sorts: [events__principal__ip.events__principal__ip]
+    limit: 5
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    defaults_version: 1
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    hidden_pivots: {}
+    listen: {}
+    row: 6
+    col: 16
+    width: 8
+    height: 6
+  - title: Untitled
+    name: Untitled
+    model: custom_visualization
+    explore: events
+    type: table
+    fields: [events.count]
+    limit: 500
+    column_limit: 50
+    row: 12
+    col: 0
+    width: 8
+    height: 6
